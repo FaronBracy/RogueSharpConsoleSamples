@@ -129,7 +129,7 @@ namespace RogueSharpRLNetSamples
                      DungeonMap = mapGenerator.CreateMap();
                      MessageLog = new MessageLog();
                      CommandSystem = new CommandSystem();
-                     _mainWindow.Title = $"RougeSharp RLNet Tutorial - Level {_mapLevel}";
+                     _mainWindow.WindowTitle = $"RougeSharp RLNet Tutorial - Level {_mapLevel}";
                      didPlayerAct = true;
                   }
                }

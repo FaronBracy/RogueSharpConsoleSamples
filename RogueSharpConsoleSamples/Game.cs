@@ -20,7 +20,7 @@ namespace RogueSharpRLNetSamples
       private static readonly int _inventoryWidth = 80;
       private static readonly int _inventoryHeight = 11;
 
-      private static RSWindow _rootConsole;
+      private static RSWindow _mainWindow;
       private static RSConsole _mapConsole;
       private static RSConsole _messageConsole;
       private static RSConsole _statConsole;
@@ -62,7 +62,7 @@ namespace RogueSharpRLNetSamples
          MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 20, 13, 7, _mapLevel );
          DungeonMap = mapGenerator.CreateMap();
 
-         _rootConsole = new RSWindow( bitmapFont, _screenWidth, _screenHeight, consoleTitle );
+         _mainWindow = new RSWindow( bitmapFont, _screenWidth, _screenHeight, consoleTitle );
          _mapConsole = new RSConsole( _mapWidth, _mapHeight );
          _messageConsole = new RSConsole( _messageWidth, _messageHeight );
          _statConsole = new RSConsole( _statWidth, _statHeight );
@@ -74,13 +74,13 @@ namespace RogueSharpRLNetSamples
          Player.Item1 = new RevealMapScroll();
          Player.Item2 = new RevealMapScroll();
 
-         _rootConsole.KeyDown += OnRootConsoleKeyDown;
-         _rootConsole.Update += OnRootConsoleUpdate;
-         _rootConsole.Render += OnRootConsoleRender;
-         _rootConsole.Start();
+         _mainWindow.KeyDown += OnMainWindowKeyDown;
+         _mainWindow.Update += OnMainWindowUpdate;
+         _mainWindow.Render += OnMainWindowRender;
+         _mainWindow.Start();
       }
 
-      private static void OnRootConsoleKeyDown( object sender, KeyEventArgs e )
+      private static void OnMainWindowKeyDown( object sender, KeyEventArgs e )
       {
          bool didPlayerAct = false;
          if ( e?.Key == null )
@@ -119,7 +119,7 @@ namespace RogueSharpRLNetSamples
                }
                else if ( keyCodePressed == RSKeyCode.Escape )
                {
-                  _rootConsole.Quit();
+                  _mainWindow.Quit();
                }
                else if ( keyCodePressed == RSKeyCode.Period )
                {
@@ -129,7 +129,7 @@ namespace RogueSharpRLNetSamples
                      DungeonMap = mapGenerator.CreateMap();
                      MessageLog = new MessageLog();
                      CommandSystem = new CommandSystem();
-                     _rootConsole.Title = $"RougeSharp RLNet Tutorial - Level {_mapLevel}";
+                     _mainWindow.Title = $"RougeSharp RLNet Tutorial - Level {_mapLevel}";
                      didPlayerAct = true;
                   }
                }
@@ -152,7 +152,7 @@ namespace RogueSharpRLNetSamples
          }
       }
 
-      private static void OnRootConsoleUpdate( object sender, FrameEventArgs e )
+      private static void OnMainWindowUpdate( object sender, FrameEventArgs e )
       {
          if ( !TargetingSystem.IsPlayerTargeting && !CommandSystem.IsPlayerTurn )
          {
@@ -161,7 +161,7 @@ namespace RogueSharpRLNetSamples
          }
       }
 
-      private static void OnRootConsoleRender( object sender, FrameEventArgs e )
+      private static void OnMainWindowRender( object sender, FrameEventArgs e )
       {
          if ( _renderRequired )
          {
@@ -172,11 +172,11 @@ namespace RogueSharpRLNetSamples
             DungeonMap.Draw( _mapConsole, _statConsole, _inventoryConsole );
             MessageLog.Draw( _messageConsole );
             TargetingSystem.Draw( _mapConsole );
-            RSConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, _inventoryHeight );
-            RSConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight, _rootConsole, _mapWidth, 0 );
-            RSConsole.Blit( _messageConsole, 0, 0, _messageWidth, _messageHeight, _rootConsole, 0, _screenHeight - _messageHeight );
-            RSConsole.Blit( _inventoryConsole, 0, 0, _inventoryWidth, _inventoryHeight, _rootConsole, 0, 0 );
-            _rootConsole.Draw();
+            RSConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _mainWindow.RootConsole, 0, _inventoryHeight );
+            RSConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight, _mainWindow.RootConsole, _mapWidth, 0 );
+            RSConsole.Blit( _messageConsole, 0, 0, _messageWidth, _messageHeight, _mainWindow.RootConsole, 0, _screenHeight - _messageHeight );
+            RSConsole.Blit( _inventoryConsole, 0, 0, _inventoryWidth, _inventoryHeight, _mainWindow.RootConsole, 0, 0 );
+            _mainWindow.Draw();
 
             _renderRequired = false;
          }

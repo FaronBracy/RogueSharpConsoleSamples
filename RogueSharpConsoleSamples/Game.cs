@@ -41,6 +41,14 @@ namespace RogueSharpRLNetSamples
       {
          string fontFileName = "terminal8x8.png";
          string consoleTitle = "RougeSharp RLNet Tutorial - Level 1";
+
+         int characterPixelWidth = 8;
+         int characterPixelHeight = 8;
+         int fontWidthInColumns = 16;
+         int fontHeightInRows = 16;
+
+         BitmapFont bitmapFont = new BitmapFont( characterPixelWidth, characterPixelHeight, fontWidthInColumns, fontHeightInRows, fontFileName );
+
          int seed = (int) DateTime.UtcNow.Ticks;
          Random = new DotNetRandom( seed );
 
@@ -54,7 +62,7 @@ namespace RogueSharpRLNetSamples
          MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 20, 13, 7, _mapLevel );
          DungeonMap = mapGenerator.CreateMap();
 
-         _rootConsole = new RSWindow( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
+         _rootConsole = new RSWindow( bitmapFont, _screenWidth, _screenHeight,  consoleTitle );
          _mapConsole = new RSConsole( _mapWidth, _mapHeight );
          _messageConsole = new RSConsole( _messageWidth, _messageHeight );
          _statConsole = new RSConsole( _statWidth, _statHeight );

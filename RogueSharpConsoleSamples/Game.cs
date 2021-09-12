@@ -71,7 +71,7 @@ namespace RogueSharpRLNetSamples
          _rootConsole.Run();
       }
 
-      private static void OnRootConsoleUpdate( object sender, UpdateEventArgs e )
+      private static void OnRootConsoleUpdate( object sender, FrameEventArgs e )
       {
          bool didPlayerAct = false;
          RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
@@ -139,7 +139,7 @@ namespace RogueSharpRLNetSamples
          }
       }
 
-      private static void OnRootConsoleRender( object sender, UpdateEventArgs e )
+      private static void OnRootConsoleRender( object sender, FrameEventArgs e )
       {
          if ( _renderRequired )
          {

@@ -20,7 +20,7 @@ namespace RogueSharpRLNetSamples
       private static readonly int _inventoryWidth = 80;
       private static readonly int _inventoryHeight = 11;
 
-      private static RSConsole _rootConsole;
+      private static RSWindow _rootConsole;
       private static RSConsole _mapConsole;
       private static RSConsole _messageConsole;
       private static RSConsole _statConsole;

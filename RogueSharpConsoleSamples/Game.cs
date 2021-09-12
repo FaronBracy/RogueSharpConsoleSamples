@@ -62,7 +62,7 @@ namespace RogueSharpRLNetSamples
          MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 20, 13, 7, _mapLevel );
          DungeonMap = mapGenerator.CreateMap();
 
-         _rootConsole = new RSWindow( bitmapFont, _screenWidth, _screenHeight,  consoleTitle );
+         _rootConsole = new RSWindow( bitmapFont, _screenWidth, _screenHeight, consoleTitle );
          _mapConsole = new RSConsole( _mapWidth, _mapHeight );
          _messageConsole = new RSConsole( _messageWidth, _messageHeight );
          _statConsole = new RSConsole( _statWidth, _statHeight );
@@ -74,49 +74,54 @@ namespace RogueSharpRLNetSamples
          Player.Item1 = new RevealMapScroll();
          Player.Item2 = new RevealMapScroll();
 
+         _rootConsole.KeyDown += OnRootConsoleKeyDown;
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;
          _rootConsole.Start();
       }
 
-      private static void OnRootConsoleUpdate( object sender, FrameEventArgs e )
+      private static void OnRootConsoleKeyDown( object sender, KeyEventArgs e )
       {
          bool didPlayerAct = false;
-         RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
+         if ( e?.Key == null )
+         {
+            return;
+         }
+         RSKeyCode keyCodePressed = e.Key.KeyCode;
 
          if ( TargetingSystem.IsPlayerTargeting )
          {
-            if ( keyPress != null )
+            if ( keyCodePressed != null )
             {
                _renderRequired = true;
-               TargetingSystem.HandleKey( keyPress.Key );
+               TargetingSystem.HandleKey( keyCodePressed );
             }
          }
          else if ( CommandSystem.IsPlayerTurn )
          {
-            if ( keyPress != null )
+            if ( keyCodePressed != null )
             {
-               if ( keyPress.Key == RLKey.Up )
+               if ( keyCodePressed == RSKeyCode.Up )
                {
                   didPlayerAct = CommandSystem.MovePlayer( Direction.Up );
                }
-               else if ( keyPress.Key == RLKey.Down )
+               else if ( keyCodePressed == RSKeyCode.Down )
                {
                   didPlayerAct = CommandSystem.MovePlayer( Direction.Down );
                }
-               else if ( keyPress.Key == RLKey.Left )
+               else if ( keyCodePressed == RSKeyCode.Left )
                {
                   didPlayerAct = CommandSystem.MovePlayer( Direction.Left );
                }
-               else if ( keyPress.Key == RLKey.Right )
+               else if ( keyCodePressed == RSKeyCode.Right )
                {
                   didPlayerAct = CommandSystem.MovePlayer( Direction.Right );
                }
-               else if ( keyPress.Key == RLKey.Escape )
+               else if ( keyCodePressed == RSKeyCode.Escape )
                {
-                  _rootConsole.Close();
+                  _rootConsole.Quit();
                }
-               else if ( keyPress.Key == RLKey.Period )
+               else if ( keyCodePressed == RSKeyCode.Period )
                {
                   if ( DungeonMap.CanMoveDownToNextLevel() )
                   {
@@ -130,7 +135,7 @@ namespace RogueSharpRLNetSamples
                }
                else
                {
-                  didPlayerAct = CommandSystem.HandleKey( keyPress.Key );
+                  didPlayerAct = CommandSystem.HandleKey( keyCodePressed );
                }
 
                if ( didPlayerAct )
@@ -141,6 +146,15 @@ namespace RogueSharpRLNetSamples
             }
          }
          else
+         {
+            CommandSystem.ActivateMonsters();
+            _renderRequired = true;
+         }
+      }
+
+      private static void OnRootConsoleUpdate( object sender, FrameEventArgs e )
+      {
+         if ( !TargetingSystem.IsPlayerTargeting && !CommandSystem.IsPlayerTurn )
          {
             CommandSystem.ActivateMonsters();
             _renderRequired = true;

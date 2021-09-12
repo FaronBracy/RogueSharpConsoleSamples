@@ -22,7 +22,7 @@ namespace RogueSharpRLNetSamples.Systems
          }
       }
 
-      public void Draw( RLConsole console )
+      public void Draw( RSConsole console )
       {
          console.Clear();
          string[] lines = _lines.ToArray();

@@ -162,7 +162,7 @@ namespace RogueSharpRLNetSamples.Systems
          }
       }
 
-      public void Draw( RLConsole mapConsole )
+      public void Draw( RSConsole mapConsole )
       {
          if ( IsPlayerTargeting )
          {

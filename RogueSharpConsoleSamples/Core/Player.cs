@@ -83,7 +83,7 @@ namespace RogueSharpRLNetSamples.Core
          return true;
       }
 
-      public void DrawStats( RLConsole statConsole )
+      public void DrawStats( RSConsole statConsole )
       {
          statConsole.Print( 1, 1, $"Name:    {Name}", RLColor.White );
          statConsole.Print( 1, 3, $"Health:  {Health}/{MaxHealth}", RLColor.White );
@@ -92,7 +92,7 @@ namespace RogueSharpRLNetSamples.Core
          statConsole.Print( 1, 9, $"Gold:    {Gold}", RLColor.Yellow );
       }
 
-      public void DrawInventory( RLConsole inventoryConsole )
+      public void DrawInventory( RSConsole inventoryConsole )
       {
          inventoryConsole.Print( 1, 1, "Equipment", Colors.InventoryHeading );
          inventoryConsole.Print( 1, 3, $"Head: {Head.Name}", Head == HeadEquipment.None() ? Swatch.DbOldStone : Swatch.DbLight );
@@ -113,7 +113,7 @@ namespace RogueSharpRLNetSamples.Core
          DrawItem( Item4, inventoryConsole, 3 );
       }
 
-      private void DrawAbility( IAbility ability, RLConsole inventoryConsole, int position )
+      private void DrawAbility( IAbility ability, RSConsole inventoryConsole, int position )
       {
          char letter = 'Q';
          if ( position == 0 )
@@ -160,7 +160,7 @@ namespace RogueSharpRLNetSamples.Core
          }
       }
 
-      private void DrawItem( IItem item, RLConsole inventoryConsole, int position )
+      private void DrawItem( IItem item, RSConsole inventoryConsole, int position )
       {
          int xPosition = 55;
          int yPosition = 3 + ( position * 2 );

@@ -10,6 +10,6 @@ namespace RogueSharpRLNetSamples.Interfaces
       int X { get; set; }
       int Y { get; set; }
 
-      void Draw( RLConsole console, DungeonMap map );
+      void Draw( RSConsole console, DungeonMap map );
    }
 }

@@ -10,7 +10,7 @@ namespace RogueSharpRLNetSamples.Core
    {
       public int? TurnsAlerted { get; set; }
 
-      public void DrawStats( RLConsole statConsole, int position )
+      public void DrawStats( RSConsole statConsole, int position )
       {
          int yPosition = 13 + ( position * 2 );
          statConsole.Print( 1, yPosition, Symbol.ToString(), Color );

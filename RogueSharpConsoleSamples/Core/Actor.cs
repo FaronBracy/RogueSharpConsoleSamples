@@ -157,7 +157,7 @@ namespace RogueSharpRLNetSamples.Core
       public char Symbol { get; set; }
       public int X { get; set; }
       public int Y { get; set; }
-      public void Draw( RLConsole mapConsole, DungeonMap map )
+      public void Draw( RSConsole mapConsole, DungeonMap map )
       {
          if ( !map.GetCell( X, Y ).IsExplored )
          {

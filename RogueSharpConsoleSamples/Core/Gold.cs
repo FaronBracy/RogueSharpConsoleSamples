@@ -26,7 +26,7 @@ namespace RogueSharpRLNetSamples.Core
       public char Symbol { get; set; }
       public int X { get; set; }
       public int Y { get; set; }
-      public void Draw( RLConsole console, DungeonMap map )
+      public void Draw( RSConsole console, DungeonMap map )
       {
          if ( !map.IsExplored( X, Y ) )
          {

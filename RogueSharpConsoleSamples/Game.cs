@@ -20,11 +20,11 @@ namespace RogueSharpRLNetSamples
       private static readonly int _inventoryWidth = 80;
       private static readonly int _inventoryHeight = 11;
 
-      private static RLConsole _rootConsole;
-      private static RLConsole _mapConsole;
-      private static RLConsole _messageConsole;
-      private static RLConsole _statConsole;
-      private static RLConsole _inventoryConsole;
+      private static RSConsole _rootConsole;
+      private static RSConsole _mapConsole;
+      private static RSConsole _messageConsole;
+      private static RSConsole _statConsole;
+      private static RSConsole _inventoryConsole;
 
       private static int _mapLevel = 1;
       private static bool _renderRequired = true;
@@ -55,10 +55,10 @@ namespace RogueSharpRLNetSamples
          DungeonMap = mapGenerator.CreateMap();
 
          _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
-         _mapConsole = new RLConsole( _mapWidth, _mapHeight );
-         _messageConsole = new RLConsole( _messageWidth, _messageHeight );
-         _statConsole = new RLConsole( _statWidth, _statHeight );
-         _inventoryConsole = new RLConsole( _inventoryWidth, _inventoryHeight );
+         _mapConsole = new RSConsole( _mapWidth, _mapHeight );
+         _messageConsole = new RSConsole( _messageWidth, _messageHeight );
+         _statConsole = new RSConsole( _statWidth, _statHeight );
+         _inventoryConsole = new RSConsole( _inventoryWidth, _inventoryHeight );
 
          CommandSystem = new CommandSystem();
          TargetingSystem = new TargetingSystem();
@@ -150,10 +150,10 @@ namespace RogueSharpRLNetSamples
             DungeonMap.Draw( _mapConsole, _statConsole, _inventoryConsole );
             MessageLog.Draw( _messageConsole );
             TargetingSystem.Draw( _mapConsole );
-            RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, _inventoryHeight );
-            RLConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight, _rootConsole, _mapWidth, 0 );
-            RLConsole.Blit( _messageConsole, 0, 0, _messageWidth, _messageHeight, _rootConsole, 0, _screenHeight - _messageHeight );
-            RLConsole.Blit( _inventoryConsole, 0, 0, _inventoryWidth, _inventoryHeight, _rootConsole, 0, 0 );
+            RSConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, _inventoryHeight );
+            RSConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight, _rootConsole, _mapWidth, 0 );
+            RSConsole.Blit( _messageConsole, 0, 0, _messageWidth, _messageHeight, _rootConsole, 0, _screenHeight - _messageHeight );
+            RSConsole.Blit( _inventoryConsole, 0, 0, _inventoryWidth, _inventoryHeight, _rootConsole, 0, 0 );
             _rootConsole.Draw();
 
             _renderRequired = false;

@@ -85,11 +85,11 @@ namespace RogueSharpRLNetSamples.Core
 
       public void DrawStats( RSConsole statConsole )
       {
-         statConsole.Print( 1, 1, $"Name:    {Name}", RLColor.White );
-         statConsole.Print( 1, 3, $"Health:  {Health}/{MaxHealth}", RLColor.White );
-         statConsole.Print( 1, 5, $"Attack:  {Attack} ({AttackChance}%)", RLColor.White );
-         statConsole.Print( 1, 7, $"Defense: {Defense} ({DefenseChance}%)", RLColor.White );
-         statConsole.Print( 1, 9, $"Gold:    {Gold}", RLColor.Yellow );
+         statConsole.Print( 1, 1, $"Name:    {Name}", RSColor.White );
+         statConsole.Print( 1, 3, $"Health:  {Health}/{MaxHealth}", RSColor.White );
+         statConsole.Print( 1, 5, $"Attack:  {Attack} ({AttackChance}%)", RSColor.White );
+         statConsole.Print( 1, 7, $"Defense: {Defense} ({DefenseChance}%)", RSColor.White );
+         statConsole.Print( 1, 9, $"Gold:    {Gold}", RSColor.Yellow );
       }
 
       public void DrawInventory( RSConsole inventoryConsole )
@@ -133,7 +133,7 @@ namespace RogueSharpRLNetSamples.Core
             letter = 'R';
          }
 
-         RLColor highlightTextColor = Swatch.DbOldStone;
+         RSColor highlightTextColor = Swatch.DbOldStone;
          if ( !( ability is DoNothing ) )
          {
             if ( ability.TurnsUntilRefreshed == 0 )
@@ -156,7 +156,7 @@ namespace RogueSharpRLNetSamples.Core
             int width = Convert.ToInt32( ( (double) ability.TurnsUntilRefreshed / (double) ability.TurnsToRefresh ) * 16.0 );
             int remainingWidth = 20 - width;
             inventoryConsole.SetBackColor( xHighlightPosition, yPosition, width, 1, Swatch.DbOldBlood );
-            inventoryConsole.SetBackColor( xHighlightPosition + width, yPosition, remainingWidth, 1, RLColor.Black );
+            inventoryConsole.SetBackColor( xHighlightPosition + width, yPosition, remainingWidth, 1, RSColor.Black );
          }
       }
 

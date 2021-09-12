@@ -14,8 +14,8 @@ namespace RogueSharpRLNetSamples.Core
       }
       public bool IsOpen { get; set; }
       
-      public RLColor Color { get; set; }
-      public RLColor BackgroundColor { get; set; }
+      public RSColor Color { get; set; }
+      public RSColor BackgroundColor { get; set; }
       public char Symbol { get; set; }
       public int X { get; set; }
       public int Y { get; set; }

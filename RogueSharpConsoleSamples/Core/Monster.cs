@@ -18,7 +18,7 @@ namespace RogueSharpRLNetSamples.Core
          int remainingWidth = 16 - width;
          statConsole.SetBackColor( 3, yPosition, width, 1, Swatch.Primary );
          statConsole.SetBackColor( 3 + width, yPosition, remainingWidth, 1, Swatch.PrimaryDarkest );  
-         statConsole.Print( 2, yPosition, $": {Name}", RLColor.White );
+         statConsole.Print( 2, yPosition, $": {Name}", RSColor.White );
       }
 
 

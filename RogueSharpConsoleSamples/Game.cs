@@ -68,7 +68,7 @@ namespace RogueSharpRLNetSamples
 
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;
-         _rootConsole.Run();
+         _rootConsole.Start();
       }
 
       private static void OnRootConsoleUpdate( object sender, FrameEventArgs e )

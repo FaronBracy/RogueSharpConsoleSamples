@@ -54,7 +54,7 @@ namespace RogueSharpRLNetSamples
          MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 20, 13, 7, _mapLevel );
          DungeonMap = mapGenerator.CreateMap();
 
-         _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
+         _rootConsole = new RSWindow( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
          _mapConsole = new RSConsole( _mapWidth, _mapHeight );
          _messageConsole = new RSConsole( _messageWidth, _messageHeight );
          _statConsole = new RSConsole( _statWidth, _statHeight );

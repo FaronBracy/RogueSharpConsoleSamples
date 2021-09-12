@@ -1,5 +1,5 @@
 ﻿using System;
-using RLNET;
+using RogueSharp.ConsoleEngine;
 using RogueSharpRLNetSamples.Behaviors;
 using RogueSharpRLNetSamples.Monsters;
 using RogueSharpRLNetSamples.Systems;

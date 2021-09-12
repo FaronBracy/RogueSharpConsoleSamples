@@ -1,4 +1,4 @@
-﻿using RLNET;
+﻿using RogueSharp.ConsoleEngine;
 using RogueSharp;
 using RogueSharpRLNetSamples.Interfaces;
 

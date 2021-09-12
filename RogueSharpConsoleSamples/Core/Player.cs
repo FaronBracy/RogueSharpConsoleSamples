@@ -1,5 +1,5 @@
 using System;
-using RLNET;
+using RogueSharp.ConsoleEngine;
 using RogueSharpRLNetSamples.Abilities;
 using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;

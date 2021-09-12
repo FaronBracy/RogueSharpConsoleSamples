@@ -1,5 +1,5 @@
 ﻿using System;
-using RLNET;
+using RogueSharp.ConsoleEngine;
 using RogueSharp.Random;
 using RogueSharpRLNetSamples.Core;
 using RogueSharpRLNetSamples.Items;
@@ -20,7 +20,7 @@ namespace RogueSharpRLNetSamples
       private static readonly int _inventoryWidth = 80;
       private static readonly int _inventoryHeight = 11;
 
-      private static RLRootConsole _rootConsole;
+      private static RLConsole _rootConsole;
       private static RLConsole _mapConsole;
       private static RLConsole _messageConsole;
       private static RLConsole _statConsole;

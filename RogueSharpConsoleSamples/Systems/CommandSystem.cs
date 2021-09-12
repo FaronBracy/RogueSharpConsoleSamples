@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using RLNET;
+using RogueSharp.ConsoleEngine;
 using RogueSharp;
 using RogueSharp.DiceNotation;
 using RogueSharpRLNetSamples.Core;

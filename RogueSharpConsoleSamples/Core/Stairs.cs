@@ -20,22 +20,22 @@ namespace RogueSharpRLNetSamples.Core
          {
             if ( IsUp )
             {
-               console.Set( X, Y, Colors.Player, null, '<' );
+               console.Set( X, Y, Colors.Player, Colors.FloorBackgroundFov, '<' );
             }
             else
             {
-               console.Set( X, Y, Colors.Player, null, '>' );
+               console.Set( X, Y, Colors.Player, Colors.FloorBackgroundFov, '>' );
             }
          }
          else
          {
             if ( IsUp )
             {
-               console.Set( X, Y, Colors.Floor, null, '<' );
+               console.Set( X, Y, Colors.Floor, Colors.FloorBackground, '<' );
             }
             else
             {
-               console.Set( X, Y, Colors.Floor, null, '>' );
+               console.Set( X, Y, Colors.Floor, Colors.FloorBackground, '>' );
             }
          }
       }

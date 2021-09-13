@@ -20,9 +20,7 @@ namespace RogueSharpRLNetSamples.Core
          statConsole.SetBackColor( 3 + width, yPosition, remainingWidth, 1, Swatch.PrimaryDarkest );  
          statConsole.Print( 2, yPosition, $": {Name}", RSColor.White );
       }
-
-
-
+      
       public static Monster Clone( Monster anotherMonster )
       {
          return new Ooze {

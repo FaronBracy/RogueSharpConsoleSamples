@@ -218,40 +218,40 @@ namespace RogueSharpRLNetSamples.Systems
          }
       }
 
-      public bool HandleKey( RLKey key )
+      public bool HandleKey( RSKeyCode key )
       {
-         if ( key == RLKey.Q )
+         if ( key == RSKeyCode.Q )
          {
             return Game.Player.QAbility.Perform();
          }
-         if ( key == RLKey.W )
+         if ( key == RSKeyCode.W )
          {
             return Game.Player.WAbility.Perform();
          }
-         if ( key == RLKey.E )
+         if ( key == RSKeyCode.E )
          {
             return Game.Player.EAbility.Perform();
          }
-         if ( key == RLKey.R )
+         if ( key == RSKeyCode.R )
          {
             return Game.Player.RAbility.Perform();
          }
 
 
          bool didUseItem = false;
-         if ( key == RLKey.Number1 )
+         if ( key == RSKeyCode.Kb1 )
          {
             didUseItem = Game.Player.Item1.Use();
          }
-         else if ( key == RLKey.Number2 )
+         else if ( key == RSKeyCode.Kb2 )
          {
             didUseItem = Game.Player.Item2.Use();
          }
-         else if ( key == RLKey.Number3 )
+         else if ( key == RSKeyCode.Kb3 )
          {
             didUseItem = Game.Player.Item3.Use();
          }
-         else if ( key == RLKey.Number4 )
+         else if ( key == RSKeyCode.Kb4 )
          {
             didUseItem = Game.Player.Item4.Use();
          }

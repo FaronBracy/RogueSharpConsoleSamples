@@ -1,4 +1,4 @@
-﻿using RLNET;
+﻿using RogueSharp.ConsoleEngine;
 using RogueSharp;
 
 namespace RogueSharpRLNetSamples.Core
@@ -9,7 +9,7 @@ namespace RogueSharpRLNetSamples.Core
       public int Y { get; set; }
       public bool IsUp { get; set; }
 
-      public void Draw( RLConsole console, DungeonMap map )
+      public void Draw( RSConsole console, DungeonMap map )
       {
          if ( !map.GetCell( X, Y ).IsExplored )
          {
@@ -20,22 +20,22 @@ namespace RogueSharpRLNetSamples.Core
          {
             if ( IsUp )
             {
-               console.Set( X, Y, Colors.Player, null, '<' );
+               console.Set( X, Y, Colors.Player, Colors.FloorBackgroundFov, '<' );
             }
             else
             {
-               console.Set( X, Y, Colors.Player, null, '>' );
+               console.Set( X, Y, Colors.Player, Colors.FloorBackgroundFov, '>' );
             }
          }
          else
          {
             if ( IsUp )
             {
-               console.Set( X, Y, Colors.Floor, null, '<' );
+               console.Set( X, Y, Colors.Floor, Colors.FloorBackground, '<' );
             }
             else
             {
-               console.Set( X, Y, Colors.Floor, null, '>' );
+               console.Set( X, Y, Colors.Floor, Colors.FloorBackground, '>' );
             }
          }
       }

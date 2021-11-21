@@ -1,5 +1,5 @@
 using System;
-using RLNET;
+using RogueSharp.ConsoleEngine;
 using RogueSharpRLNetSamples.Abilities;
 using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
@@ -83,16 +83,16 @@ namespace RogueSharpRLNetSamples.Core
          return true;
       }
 
-      public void DrawStats( RLConsole statConsole )
+      public void DrawStats( RSConsole statConsole )
       {
-         statConsole.Print( 1, 1, $"Name:    {Name}", RLColor.White );
-         statConsole.Print( 1, 3, $"Health:  {Health}/{MaxHealth}", RLColor.White );
-         statConsole.Print( 1, 5, $"Attack:  {Attack} ({AttackChance}%)", RLColor.White );
-         statConsole.Print( 1, 7, $"Defense: {Defense} ({DefenseChance}%)", RLColor.White );
-         statConsole.Print( 1, 9, $"Gold:    {Gold}", RLColor.Yellow );
+         statConsole.Print( 1, 1, $"Name:    {Name}", RSColor.White );
+         statConsole.Print( 1, 3, $"Health:  {Health}/{MaxHealth}", RSColor.White );
+         statConsole.Print( 1, 5, $"Attack:  {Attack} ({AttackChance}%)", RSColor.White );
+         statConsole.Print( 1, 7, $"Defense: {Defense} ({DefenseChance}%)", RSColor.White );
+         statConsole.Print( 1, 9, $"Gold:    {Gold}", RSColor.Yellow );
       }
 
-      public void DrawInventory( RLConsole inventoryConsole )
+      public void DrawInventory( RSConsole inventoryConsole )
       {
          inventoryConsole.Print( 1, 1, "Equipment", Colors.InventoryHeading );
          inventoryConsole.Print( 1, 3, $"Head: {Head.Name}", Head == HeadEquipment.None() ? Swatch.DbOldStone : Swatch.DbLight );
@@ -113,7 +113,7 @@ namespace RogueSharpRLNetSamples.Core
          DrawItem( Item4, inventoryConsole, 3 );
       }
 
-      private void DrawAbility( IAbility ability, RLConsole inventoryConsole, int position )
+      private void DrawAbility( IAbility ability, RSConsole inventoryConsole, int position )
       {
          char letter = 'Q';
          if ( position == 0 )
@@ -133,7 +133,7 @@ namespace RogueSharpRLNetSamples.Core
             letter = 'R';
          }
 
-         RLColor highlightTextColor = Swatch.DbOldStone;
+         RSColor highlightTextColor = Swatch.DbOldStone;
          if ( !( ability is DoNothing ) )
          {
             if ( ability.TurnsUntilRefreshed == 0 )
@@ -156,11 +156,11 @@ namespace RogueSharpRLNetSamples.Core
             int width = Convert.ToInt32( ( (double) ability.TurnsUntilRefreshed / (double) ability.TurnsToRefresh ) * 16.0 );
             int remainingWidth = 20 - width;
             inventoryConsole.SetBackColor( xHighlightPosition, yPosition, width, 1, Swatch.DbOldBlood );
-            inventoryConsole.SetBackColor( xHighlightPosition + width, yPosition, remainingWidth, 1, RLColor.Black );
+            inventoryConsole.SetBackColor( xHighlightPosition + width, yPosition, remainingWidth, 1, RSColor.Black );
          }
       }
 
-      private void DrawItem( IItem item, RLConsole inventoryConsole, int position )
+      private void DrawItem( IItem item, RSConsole inventoryConsole, int position )
       {
          int xPosition = 55;
          int yPosition = 3 + ( position * 2 );

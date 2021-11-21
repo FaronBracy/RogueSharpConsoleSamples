@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using RLNET;
+using RogueSharp.ConsoleEngine;
 
 namespace RogueSharpRLNetSamples.Systems
 {
@@ -22,13 +22,13 @@ namespace RogueSharpRLNetSamples.Systems
          }
       }
 
-      public void Draw( RLConsole console )
+      public void Draw( RSConsole console )
       {
          console.Clear();
          string[] lines = _lines.ToArray();
          for ( int i = 0; i < lines.Count(); i++ )
          {
-            console.Print( 1, i + 1, lines[i], RLColor.White );
+            console.Print( 1, i + 1, lines[i], RSColor.White );
          }
       }
    }

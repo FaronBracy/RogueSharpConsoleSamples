@@ -1,4 +1,4 @@
-﻿using RLNET;
+﻿using RogueSharp.ConsoleEngine;
 using RogueSharp;
 using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
@@ -153,11 +153,11 @@ namespace RogueSharpRLNetSamples.Core
       }
 
       // IDrawable
-      public RLColor Color { get; set; }
+      public RSColor Color { get; set; }
       public char Symbol { get; set; }
       public int X { get; set; }
       public int Y { get; set; }
-      public void Draw( RLConsole mapConsole, DungeonMap map )
+      public void Draw( RSConsole mapConsole, DungeonMap map )
       {
          if ( !map.GetCell( X, Y ).IsExplored )
          {

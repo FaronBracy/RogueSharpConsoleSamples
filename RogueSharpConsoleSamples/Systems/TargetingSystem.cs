@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using RLNET;
+using RogueSharp.ConsoleEngine;
 using RogueSharp;
 using RogueSharpRLNetSamples.Core;
 using RogueSharpRLNetSamples.Interfaces;
@@ -85,7 +85,7 @@ namespace RogueSharpRLNetSamples.Systems
          _selectionType = SelectionType.None;
       }
 
-      public bool HandleKey( RLKey key )
+      public bool HandleKey( RSKeyCode key )
       {
          if ( _selectionType == SelectionType.Target )
          {
@@ -100,7 +100,7 @@ namespace RogueSharpRLNetSamples.Systems
             HandleLocationTargeting( key );
          }
 
-         if ( key == RLKey.Enter )
+         if ( key == RSKeyCode.Return )
          {
             _targetable.SelectTarget( _cursorPosition );
             StopTargeting();
@@ -110,9 +110,9 @@ namespace RogueSharpRLNetSamples.Systems
          return false;
       }
 
-      private void HandleSelectableTargeting( RLKey key )
+      private void HandleSelectableTargeting( RSKeyCode key )
       {
-         if ( key == RLKey.Right || key == RLKey.Down )
+         if ( key == RSKeyCode.Right || key == RSKeyCode.Down )
          {
             _currentTargetIndex++;
             if ( _currentTargetIndex >= _selectableTargets.Count )
@@ -121,7 +121,7 @@ namespace RogueSharpRLNetSamples.Systems
             }
             _cursorPosition = _selectableTargets[_currentTargetIndex];
          }
-         else if ( key == RLKey.Left || key == RLKey.Up )
+         else if ( key == RSKeyCode.Left || key == RSKeyCode.Up )
          {
             _currentTargetIndex--;
             if ( _currentTargetIndex < 0 )
@@ -132,25 +132,25 @@ namespace RogueSharpRLNetSamples.Systems
          }
       }
 
-      private void HandleLocationTargeting( RLKey key )
+      private void HandleLocationTargeting( RSKeyCode key )
       {
          int x = _cursorPosition.X;
          int y = _cursorPosition.Y;
          DungeonMap map = Game.DungeonMap;
 
-         if ( key == RLKey.Right )
+         if ( key == RSKeyCode.Right )
          {
             x++;
          }
-         else if ( key == RLKey.Left )
+         else if ( key == RSKeyCode.Left )
          {
             x--;
          }
-         else if ( key == RLKey.Up )
+         else if ( key == RSKeyCode.Up )
          {
             y--;
          }
-         else if ( key == RLKey.Down )
+         else if ( key == RSKeyCode.Down )
          {
             y++;
          }
@@ -162,7 +162,7 @@ namespace RogueSharpRLNetSamples.Systems
          }
       }
 
-      public void Draw( RLConsole mapConsole )
+      public void Draw( RSConsole mapConsole )
       {
          if ( IsPlayerTargeting )
          {

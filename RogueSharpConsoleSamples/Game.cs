@@ -1,5 +1,5 @@
 ﻿using System;
-using RLNET;
+using RogueSharp.ConsoleEngine;
 using RogueSharp.Random;
 using RogueSharpRLNetSamples.Core;
 using RogueSharpRLNetSamples.Items;
@@ -20,11 +20,11 @@ namespace RogueSharpRLNetSamples
       private static readonly int _inventoryWidth = 80;
       private static readonly int _inventoryHeight = 11;
 
-      private static RLRootConsole _rootConsole;
-      private static RLConsole _mapConsole;
-      private static RLConsole _messageConsole;
-      private static RLConsole _statConsole;
-      private static RLConsole _inventoryConsole;
+      private static RSWindow _mainWindow;
+      private static RSConsole _mapConsole;
+      private static RSConsole _messageConsole;
+      private static RSConsole _statConsole;
+      private static RSConsole _inventoryConsole;
 
       private static int _mapLevel = 1;
       private static bool _renderRequired = true;
@@ -41,6 +41,14 @@ namespace RogueSharpRLNetSamples
       {
          string fontFileName = "terminal8x8.png";
          string consoleTitle = "RougeSharp RLNet Tutorial - Level 1";
+
+         int characterPixelWidth = 8;
+         int characterPixelHeight = 8;
+         int fontWidthInColumns = 16;
+         int fontHeightInRows = 16;
+
+         BitmapFont bitmapFont = new BitmapFont( characterPixelWidth, characterPixelHeight, fontWidthInColumns, fontHeightInRows, fontFileName );
+
          int seed = (int) DateTime.UtcNow.Ticks;
          Random = new DotNetRandom( seed );
 
@@ -54,11 +62,11 @@ namespace RogueSharpRLNetSamples
          MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 20, 13, 7, _mapLevel );
          DungeonMap = mapGenerator.CreateMap();
 
-         _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
-         _mapConsole = new RLConsole( _mapWidth, _mapHeight );
-         _messageConsole = new RLConsole( _messageWidth, _messageHeight );
-         _statConsole = new RLConsole( _statWidth, _statHeight );
-         _inventoryConsole = new RLConsole( _inventoryWidth, _inventoryHeight );
+         _mainWindow = new RSWindow( bitmapFont, _screenWidth, _screenHeight, consoleTitle );
+         _mapConsole = new RSConsole( _mapWidth, _mapHeight );
+         _messageConsole = new RSConsole( _messageWidth, _messageHeight );
+         _statConsole = new RSConsole( _statWidth, _statHeight );
+         _inventoryConsole = new RSConsole( _inventoryWidth, _inventoryHeight );
 
          CommandSystem = new CommandSystem();
          TargetingSystem = new TargetingSystem();
@@ -66,49 +74,54 @@ namespace RogueSharpRLNetSamples
          Player.Item1 = new RevealMapScroll();
          Player.Item2 = new RevealMapScroll();
 
-         _rootConsole.Update += OnRootConsoleUpdate;
-         _rootConsole.Render += OnRootConsoleRender;
-         _rootConsole.Run();
+         _mainWindow.KeyDown += OnMainWindowKeyDown;
+         _mainWindow.Update += OnMainWindowUpdate;
+         _mainWindow.Render += OnMainWindowRender;
+         _mainWindow.Start();
       }
 
-      private static void OnRootConsoleUpdate( object sender, UpdateEventArgs e )
+      private static void OnMainWindowKeyDown( object sender, KeyEventArgs e )
       {
          bool didPlayerAct = false;
-         RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
+         if ( e?.Key == null )
+         {
+            return;
+         }
+         RSKeyCode keyCodePressed = e.Key.KeyCode;
 
          if ( TargetingSystem.IsPlayerTargeting )
          {
-            if ( keyPress != null )
+            if ( keyCodePressed != null )
             {
                _renderRequired = true;
-               TargetingSystem.HandleKey( keyPress.Key );
+               TargetingSystem.HandleKey( keyCodePressed );
             }
          }
          else if ( CommandSystem.IsPlayerTurn )
          {
-            if ( keyPress != null )
+            if ( keyCodePressed != null )
             {
-               if ( keyPress.Key == RLKey.Up )
+               if ( keyCodePressed == RSKeyCode.Up )
                {
                   didPlayerAct = CommandSystem.MovePlayer( Direction.Up );
                }
-               else if ( keyPress.Key == RLKey.Down )
+               else if ( keyCodePressed == RSKeyCode.Down )
                {
                   didPlayerAct = CommandSystem.MovePlayer( Direction.Down );
                }
-               else if ( keyPress.Key == RLKey.Left )
+               else if ( keyCodePressed == RSKeyCode.Left )
                {
                   didPlayerAct = CommandSystem.MovePlayer( Direction.Left );
                }
-               else if ( keyPress.Key == RLKey.Right )
+               else if ( keyCodePressed == RSKeyCode.Right )
                {
                   didPlayerAct = CommandSystem.MovePlayer( Direction.Right );
                }
-               else if ( keyPress.Key == RLKey.Escape )
+               else if ( keyCodePressed == RSKeyCode.Escape )
                {
-                  _rootConsole.Close();
+                  _mainWindow.Quit();
                }
-               else if ( keyPress.Key == RLKey.Period )
+               else if ( keyCodePressed == RSKeyCode.Period )
                {
                   if ( DungeonMap.CanMoveDownToNextLevel() )
                   {
@@ -116,13 +129,13 @@ namespace RogueSharpRLNetSamples
                      DungeonMap = mapGenerator.CreateMap();
                      MessageLog = new MessageLog();
                      CommandSystem = new CommandSystem();
-                     _rootConsole.Title = $"RougeSharp RLNet Tutorial - Level {_mapLevel}";
+                     _mainWindow.WindowTitle = $"RougeSharp RLNet Tutorial - Level {_mapLevel}";
                      didPlayerAct = true;
                   }
                }
                else
                {
-                  didPlayerAct = CommandSystem.HandleKey( keyPress.Key );
+                  didPlayerAct = CommandSystem.HandleKey( keyCodePressed );
                }
 
                if ( didPlayerAct )
@@ -139,7 +152,16 @@ namespace RogueSharpRLNetSamples
          }
       }
 
-      private static void OnRootConsoleRender( object sender, UpdateEventArgs e )
+      private static void OnMainWindowUpdate( object sender, FrameEventArgs e )
+      {
+         if ( !TargetingSystem.IsPlayerTargeting && !CommandSystem.IsPlayerTurn )
+         {
+            CommandSystem.ActivateMonsters();
+            _renderRequired = true;
+         }
+      }
+
+      private static void OnMainWindowRender( object sender, FrameEventArgs e )
       {
          if ( _renderRequired )
          {
@@ -150,11 +172,11 @@ namespace RogueSharpRLNetSamples
             DungeonMap.Draw( _mapConsole, _statConsole, _inventoryConsole );
             MessageLog.Draw( _messageConsole );
             TargetingSystem.Draw( _mapConsole );
-            RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, _inventoryHeight );
-            RLConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight, _rootConsole, _mapWidth, 0 );
-            RLConsole.Blit( _messageConsole, 0, 0, _messageWidth, _messageHeight, _rootConsole, 0, _screenHeight - _messageHeight );
-            RLConsole.Blit( _inventoryConsole, 0, 0, _inventoryWidth, _inventoryHeight, _rootConsole, 0, 0 );
-            _rootConsole.Draw();
+            RSConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _mainWindow.RootConsole, 0, _inventoryHeight );
+            RSConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight, _mainWindow.RootConsole, _mapWidth, 0 );
+            RSConsole.Blit( _messageConsole, 0, 0, _messageWidth, _messageHeight, _mainWindow.RootConsole, 0, _screenHeight - _messageHeight );
+            RSConsole.Blit( _inventoryConsole, 0, 0, _inventoryWidth, _inventoryHeight, _mainWindow.RootConsole, 0, 0 );
+            _mainWindow.Draw();
 
             _renderRequired = false;
          }

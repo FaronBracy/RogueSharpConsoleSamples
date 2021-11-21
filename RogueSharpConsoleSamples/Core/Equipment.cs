@@ -1,4 +1,4 @@
-using RLNET;
+using RogueSharp.ConsoleEngine;
 using RogueSharp;
 using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
@@ -10,7 +10,7 @@ namespace RogueSharpRLNetSamples.Core
       public Equipment()
       {
          Symbol = ']';
-         Color = RLColor.Yellow;
+         Color = RSColor.Yellow;
       }
 
       public int Attack { get; set; }
@@ -107,11 +107,11 @@ namespace RogueSharpRLNetSamples.Core
          return false;
       }
 
-      public RLColor Color { get; set; }
+      public RSColor Color { get; set; }
       public char Symbol { get; set; }
       public int X { get; set; }
       public int Y { get; set; }
-      public void Draw( RLConsole console, DungeonMap map )
+      public void Draw( RSConsole console, DungeonMap map )
       {
          if ( !map.IsExplored( X, Y ) )
          {
@@ -124,7 +124,7 @@ namespace RogueSharpRLNetSamples.Core
          }
          else
          {
-            console.Set( X, Y, RLColor.Blend( Color, RLColor.Gray, 0.5f ), Colors.FloorBackground, Symbol );
+            console.Set( X, Y, RSColor.Blend( Color, RSColor.Gray, 0.5f ), Colors.FloorBackground, Symbol );
          }
       }
    }

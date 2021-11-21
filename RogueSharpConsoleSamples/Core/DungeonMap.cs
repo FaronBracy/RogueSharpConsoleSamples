@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using RLNET;
+using RogueSharp.ConsoleEngine;
 using RogueSharp;
 using RogueSharpRLNetSamples.Interfaces;
 
@@ -230,7 +230,7 @@ namespace RogueSharpRLNetSamples.Core
          return false;
       }
 
-      public void Draw( RLConsole mapConsole, RLConsole statConsole, RLConsole inventoryConsole )
+      public void Draw( RSConsole mapConsole, RSConsole statConsole, RSConsole inventoryConsole )
       {
          mapConsole.Clear();
          foreach ( DungeonCell cell in GetAllCells() )
@@ -271,7 +271,7 @@ namespace RogueSharpRLNetSamples.Core
          player.DrawInventory( inventoryConsole );
       }
 
-      private void SetConsoleSymbolForCell( RLConsole console, DungeonCell cell )
+      private void SetConsoleSymbolForCell( RSConsole console, DungeonCell cell )
       {
          if ( !cell.IsExplored )
          {

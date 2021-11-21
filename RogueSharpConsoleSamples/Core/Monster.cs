@@ -1,5 +1,5 @@
 ﻿using System;
-using RLNET;
+using RogueSharp.ConsoleEngine;
 using RogueSharpRLNetSamples.Behaviors;
 using RogueSharpRLNetSamples.Monsters;
 using RogueSharpRLNetSamples.Systems;
@@ -10,7 +10,7 @@ namespace RogueSharpRLNetSamples.Core
    {
       public int? TurnsAlerted { get; set; }
 
-      public void DrawStats( RLConsole statConsole, int position )
+      public void DrawStats( RSConsole statConsole, int position )
       {
          int yPosition = 13 + ( position * 2 );
          statConsole.Print( 1, yPosition, Symbol.ToString(), Color );
@@ -18,11 +18,9 @@ namespace RogueSharpRLNetSamples.Core
          int remainingWidth = 16 - width;
          statConsole.SetBackColor( 3, yPosition, width, 1, Swatch.Primary );
          statConsole.SetBackColor( 3 + width, yPosition, remainingWidth, 1, Swatch.PrimaryDarkest );  
-         statConsole.Print( 2, yPosition, $": {Name}", RLColor.White );
+         statConsole.Print( 2, yPosition, $": {Name}", RSColor.White );
       }
-
-
-
+      
       public static Monster Clone( Monster anotherMonster )
       {
          return new Ooze {

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RogueSharpTutorialGame", "R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RogueSharp.ConsoleEngine", "..\RogueSharp.Console\RogueSharp.ConsoleEngine\RogueSharp.ConsoleEngine.csproj", "{B206D050-6927-4539-A6CC-10413BA65405}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoguelikeDevTutorial", "RoguelikeDevTutorial\RoguelikeDevTutorial.csproj", "{DF9056AD-311D-4C2B-B623-23C1AF877294}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{B206D050-6927-4539-A6CC-10413BA65405}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B206D050-6927-4539-A6CC-10413BA65405}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B206D050-6927-4539-A6CC-10413BA65405}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF9056AD-311D-4C2B-B623-23C1AF877294}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF9056AD-311D-4C2B-B623-23C1AF877294}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF9056AD-311D-4C2B-B623-23C1AF877294}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF9056AD-311D-4C2B-B623-23C1AF877294}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

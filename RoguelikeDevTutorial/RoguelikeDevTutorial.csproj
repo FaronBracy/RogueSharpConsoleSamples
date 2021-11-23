@@ -6,6 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="dejavu10x10_gs_tc.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="dejavu10x10_gs_tc.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="RogueSharp" Version="5.0.0-pre4" />
   </ItemGroup>
 

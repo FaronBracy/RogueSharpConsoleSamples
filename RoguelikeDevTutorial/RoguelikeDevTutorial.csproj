@@ -13,4 +13,13 @@
     <ProjectReference Include="..\..\RogueSharp.Console\RogueSharp.ConsoleEngine\RogueSharp.ConsoleEngine.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="dejavu10x10_gs_tc.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="font_10x10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -40,4 +40,11 @@ namespace RoguelikeDevTutorial
          _actor.Move( _dx, _dy );  
       }
    }
+
+   public class NoAction : IAction
+   {
+      public void Execute()
+      {
+      }
+   }
 }

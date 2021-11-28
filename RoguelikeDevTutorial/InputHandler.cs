@@ -4,9 +4,11 @@ namespace RoguelikeDevTutorial
 {
    public class InputHandler
    {
-      public IAction HandleKey( RSKey key )
+      public IAction HandleKey( RSKey key, Engine engine )
       {
-         switch( key.KeyCode )
+         Entity player = engine.Player;
+
+         switch ( key.KeyCode )
          {
             case RSKeyCode.Escape:
             {
@@ -14,19 +16,19 @@ namespace RoguelikeDevTutorial
             }
             case RSKeyCode.Up:
             {
-               return new MovementAction( 0, -1, Game.Player );
+               return new MovementAction( 0, -1, player, engine );
             }
             case RSKeyCode.Down:
             {
-               return new MovementAction( 0, 1, Game.Player );
+               return new MovementAction( 0, 1, player, engine );
             }
             case RSKeyCode.Left:
             {
-               return new MovementAction( -1, 0, Game.Player );
+               return new MovementAction( -1, 0, player, engine );
             }
             case RSKeyCode.Right:
             {
-               return new MovementAction( 1, 0, Game.Player );
+               return new MovementAction( 1, 0, player, engine );
             }
          }
 

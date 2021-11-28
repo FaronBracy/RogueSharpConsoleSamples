@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using RogueSharp.ConsoleEngine;
 
 namespace RoguelikeDevTutorial
@@ -6,20 +7,24 @@ namespace RoguelikeDevTutorial
    public static class Game
    {
       public static RSWindow MainWindow { get; private set; }
-      public static Actor Player { get; private set; }
-      public static InputHandler InputHandler { get; private set; }
+
+      public static Engine Engine { get; private set; }
 
       public static void Main( string[] args )
       {
          int screenWidth = 80;
          int screenHeight = 50;
 
+         int mapWidth = 80;
+         int mapHeight = 45;
+
          int playerX = screenWidth / 2;
          int playerY = screenHeight / 2;
 
-         Player = new Actor( playerX, playerY );
+         Entity player = new Entity( playerX, playerY, '@', RSColor.White );
+         Entity npc = new Entity( playerX - 5, playerY, '@', new RSColor( 255, 255, 0 ) );
 
-         InputHandler = new InputHandler();
+         InputHandler inputHandler = new InputHandler();
 
          // BitmapFont in RogueSharp is like the tileset in TCOD
          BitmapFont tileset = new BitmapFont( 10, 10, 32, 8, "dejavu10x10_gs_tc.png", BitmapFontLayout.Tcod );
@@ -36,6 +41,9 @@ namespace RoguelikeDevTutorial
          MainWindow.Render += MainWindowRender;
          MainWindow.Update += MainWindowUpdate;
 
+         GameMap gameMap = new GameMap( mapWidth, mapHeight );
+
+         Engine = new Engine( new List<Entity>{ player, npc }, inputHandler, player, gameMap );
 
          // Kick off the main game loop
          MainWindow.Start();
@@ -51,15 +59,12 @@ namespace RoguelikeDevTutorial
       {
          Console.WriteLine( $"KeyDown - {e.Key.KeyCode} - {e.Key.KeyScanCode} - {e.Key.KeyModifier}" );
 
-         IAction action = InputHandler.HandleKey( e.Key );
-         action.Execute();
+         Engine.HandleInput( e.Key );
       }
 
       private static void MainWindowRender( object sender, FrameEventArgs e )
       {
-         MainWindow.RootConsole.Clear();
-         MainWindow.RootConsole.Print( Player.X, Player.Y, "@", RSColor.White );
-         MainWindow.Draw();
+         Engine.Render( MainWindow );
       }
 
       private static void MainWindowUpdate( object sender, FrameEventArgs e )

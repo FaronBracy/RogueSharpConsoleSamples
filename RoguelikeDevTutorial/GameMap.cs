@@ -10,11 +10,6 @@ namespace RoguelikeDevTutorial
       {
          foreach( Tile tile in GetAllCells() )
          {
-            SetTileData( tile, Tile.Floor );
-         }
-         
-         foreach ( Tile tile in GetCellsAlongLine( 30, 22, 33, 22 ) )
-         {
             SetTileData( tile, Tile.Wall );
          }
       }
@@ -28,7 +23,7 @@ namespace RoguelikeDevTutorial
 
       public bool InBounds( int x, int y )
       {
-         return ( 0 <= x && x < Width && 0 <= y && 0 < Height );
+         return 0 <= x && x < Width && 0 <= y && 0 < Height;
       }
 
       public void Render( RSWindow mainWindow )

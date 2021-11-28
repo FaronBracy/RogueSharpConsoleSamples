@@ -17,7 +17,7 @@ namespace RoguelikeDevTutorial
          int playerX = screenWidth / 2;
          int playerY = screenHeight / 2;
 
-         Player = new Entity( playerX, playerY );
+         Player = new Entity( playerX, playerY, '@', RSColor.White );
 
          InputHandler = new InputHandler();
 

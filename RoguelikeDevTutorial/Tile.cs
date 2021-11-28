@@ -12,14 +12,8 @@ namespace RoguelikeDevTutorial
 
    public class Tile : Cell
    {
-      public static Tile Floor()
-      {
-         return new Tile( true, true, new Graphic { Character = ' ', Foreground = new RSColor( 255, 255, 255 ), Background = new RSColor( 50, 50, 150 ) } );
-      }
-      public static Tile Wall()
-      {
-         return new Tile( true, true, new Graphic { Character = ' ', Foreground = new RSColor( 255, 255, 255 ), Background = new RSColor( 0, 0, 100 ) } );
-      }
+      public static Tile Floor => new Tile( true, true, new Graphic { Character = ' ', Foreground = new RSColor( 255, 255, 255 ), Background = new RSColor( 50, 50, 150 ) } );
+      public static Tile Wall => new Tile( true, false, new Graphic { Character = ' ', Foreground = new RSColor( 255, 255, 255 ), Background = new RSColor( 0, 0, 100 ) } );
 
       public Graphic Dark { get; set; }
 
@@ -54,33 +48,6 @@ namespace RoguelikeDevTutorial
       public Wall( int x, int y )
          : base( x, y, true, true, new Graphic { Character = ' ', Foreground = new RSColor( 255, 255, 255 ), Background = new RSColor( 0, 0, 100 ) } )
       {
-      }
-   }
-
-   public class GameMap : Map<Tile>
-   {
-      public GameMap( int width, int height )
-         : base( width, height )
-      {
-         foreach( Tile tile in GetAllCells() )
-         {
-            SetTileData( tile, Tile.Floor() );
-         }
-      }
-
-      private void SetTileData( Tile source, Tile destination )
-      {
-         source.IsTransparent = destination.IsTransparent;
-         source.IsWalkable = destination.IsWalkable;
-         source.Dark = destination.Dark;
-      }
-
-      public void Render( RSWindow mainWindow )
-      {
-         foreach( Tile tile in GetAllCells() )
-         {
-            mainWindow.RootConsole.Set( tile.X, tile.Y, tile.Dark.Foreground, tile.Dark.Background, tile.Dark.Character );  
-         }
       }
    }
 }

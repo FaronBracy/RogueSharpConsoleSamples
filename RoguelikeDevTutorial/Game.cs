@@ -15,6 +15,9 @@ namespace RoguelikeDevTutorial
          int screenWidth = 80;
          int screenHeight = 50;
 
+         int mapWidth = 80;
+         int mapHeight = 45;
+
          int playerX = screenWidth / 2;
          int playerY = screenHeight / 2;
 
@@ -38,7 +41,7 @@ namespace RoguelikeDevTutorial
          MainWindow.Render += MainWindowRender;
          MainWindow.Update += MainWindowUpdate;
 
-         GameMap gameMap = new GameMap( 80, 50 );
+         GameMap gameMap = new GameMap( mapWidth, mapHeight );
 
          Engine = new Engine( new List<Entity>{ player, npc }, inputHandler, player, gameMap );
 

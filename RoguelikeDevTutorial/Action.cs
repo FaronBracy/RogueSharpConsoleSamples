@@ -27,16 +27,29 @@ namespace RoguelikeDevTutorial
       private readonly int _dx;
       private readonly int _dy;
       private readonly Entity _entity;
+      private readonly Engine _engine;
 
-      public MovementAction( int dx, int dy, Entity entity )
+      public MovementAction( int dx, int dy, Entity entity, Engine engine )
       {
          _dx = dx;
          _dy = dy;
          _entity = entity;
+         _engine = engine;
       }
 
       public void Execute()
       {
+         int destinationX = _entity.X + _dx;
+         int destinationY = _entity.Y + _dy;
+
+         if ( !_engine.GameMap.InBounds( destinationX, destinationY ) )
+         {
+            return;
+         }
+         if ( !_engine.GameMap.GetCell( destinationX, destinationY ).IsWalkable )
+         {
+            return;
+         }
          _entity.Move( _dx, _dy );  
       }
    }

@@ -20,7 +20,7 @@ namespace RoguelikeDevTutorial
 
       public void HandleInput( RSKey key )
       {
-         IAction action = InputHandler.HandleKey( key );
+         IAction action = InputHandler.HandleKey( key, this );
          action.Execute();
       }
 

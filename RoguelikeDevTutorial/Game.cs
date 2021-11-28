@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using RogueSharp.ConsoleEngine;
+using RogueSharp.MapCreation;
 
 namespace RoguelikeDevTutorial
 {
@@ -41,8 +42,22 @@ namespace RoguelikeDevTutorial
          MainWindow.Render += MainWindowRender;
          MainWindow.Update += MainWindowUpdate;
 
-         GameMap gameMap = new GameMap( mapWidth, mapHeight );
+         RandomRoomsMapCreationStrategy<GameMap,Tile> mapGenerator = new RandomRoomsMapCreationStrategy<GameMap,Tile>( mapWidth, mapHeight, 30, 10, 6 ); 
 
+         GameMap gameMap = mapGenerator.CreateMap();
+         
+         foreach ( Tile tile in gameMap.GetAllCells() )
+         {
+            if ( tile.IsWalkable )
+            {
+               tile.Dark = Tile.Floor.Dark;
+            }
+            else
+            {
+               tile.Dark = Tile.Wall.Dark;
+            }
+         }
+         
          Engine = new Engine( new List<Entity>{ player, npc }, inputHandler, player, gameMap );
 
          // Kick off the main game loop

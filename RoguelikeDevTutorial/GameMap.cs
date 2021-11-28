@@ -14,6 +14,11 @@ namespace RoguelikeDevTutorial
          }
       }
 
+      public GameMap()
+      {
+         // required empty default constructor
+      }
+
       private void SetTileData( Tile source, Tile destination )
       {
          source.IsTransparent = destination.IsTransparent;

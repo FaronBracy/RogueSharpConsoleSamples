@@ -4,7 +4,7 @@ namespace RoguelikeDevTutorial
 {
    public interface IAction
    {
-      void Execute();
+      void Perform();
    }
 
    public class EscapeAction : IAction
@@ -16,7 +16,7 @@ namespace RoguelikeDevTutorial
          _gameWindow = gameWindow;
       }
 
-      public void Execute()
+      public void Perform()
       {
          _gameWindow.Quit();
       }
@@ -37,7 +37,7 @@ namespace RoguelikeDevTutorial
          _engine = engine;
       }
 
-      public void Execute()
+      public void Perform()
       {
          int destinationX = _entity.X + _dx;
          int destinationY = _entity.Y + _dy;
@@ -56,7 +56,7 @@ namespace RoguelikeDevTutorial
 
    public class NoAction : IAction
    {
-      public void Execute()
+      public void Perform()
       {
       }
    }

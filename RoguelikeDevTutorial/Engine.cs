@@ -21,7 +21,7 @@ namespace RoguelikeDevTutorial
       public void HandleInput( RSKey key )
       {
          IAction action = InputHandler.HandleKey( key, this );
-         action.Execute();
+         action.Perform();
       }
 
       public void Render( RSWindow mainWindow )

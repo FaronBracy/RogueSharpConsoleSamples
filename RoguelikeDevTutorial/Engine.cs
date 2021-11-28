@@ -8,12 +8,14 @@ namespace RoguelikeDevTutorial
       public List<Entity> Entities { get; private set; }
       public InputHandler InputHandler { get; private set; }
       public Entity Player { get; private set; }
+      public GameMap GameMap { get; private set; }
 
-      public Engine( List<Entity> entities, InputHandler inputHandler, Entity player )
+      public Engine( List<Entity> entities, InputHandler inputHandler, Entity player, GameMap gameMap )
       {
          Entities = entities;
          InputHandler = inputHandler;
          Player = player;
+         GameMap = gameMap;
       }
 
       public void HandleInput( RSKey key )
@@ -25,6 +27,8 @@ namespace RoguelikeDevTutorial
       public void Render( RSWindow mainWindow )
       {
          mainWindow.RootConsole.Clear();
+
+         GameMap.Render( mainWindow );  
 
          foreach ( Entity entity in Entities )
          {

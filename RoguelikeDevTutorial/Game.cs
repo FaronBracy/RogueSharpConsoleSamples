@@ -38,7 +38,9 @@ namespace RoguelikeDevTutorial
          MainWindow.Render += MainWindowRender;
          MainWindow.Update += MainWindowUpdate;
 
-         Engine = new Engine( new List<Entity>{ player, npc }, inputHandler, player );
+         GameMap gameMap = new GameMap( 80, 50 );
+
+         Engine = new Engine( new List<Entity>{ player, npc }, inputHandler, player, gameMap );
 
          // Kick off the main game loop
          MainWindow.Start();

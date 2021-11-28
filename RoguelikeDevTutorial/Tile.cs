@@ -1,7 +1,4 @@
-﻿using System.Data.SqlTypes;
-using System.Reflection.PortableExecutable;
-using System.Runtime.Serialization.Formatters;
-using RogueSharp;
+﻿using RogueSharp;
 using RogueSharp.ConsoleEngine;
 
 namespace RoguelikeDevTutorial
@@ -17,11 +14,11 @@ namespace RoguelikeDevTutorial
    {
       public static Tile Floor()
       {
-         return new Tile( 0, 0, true, true, new Graphic { Character = ' ', Foreground = new RSColor( 255, 255, 255 ), Background = new RSColor( 50, 50, 150 ) } );
+         return new Tile( true, true, new Graphic { Character = ' ', Foreground = new RSColor( 255, 255, 255 ), Background = new RSColor( 50, 50, 150 ) } );
       }
       public static Tile Wall()
       {
-         return new Tile( 0, 0, true, true, new Graphic { Character = ' ', Foreground = new RSColor( 255, 255, 255 ), Background = new RSColor( 0, 0, 100 ) } );
+         return new Tile( true, true, new Graphic { Character = ' ', Foreground = new RSColor( 255, 255, 255 ), Background = new RSColor( 0, 0, 100 ) } );
       }
 
       public Graphic Dark { get; set; }
@@ -32,8 +29,15 @@ namespace RoguelikeDevTutorial
          Dark = dark;
       }
 
+      public Tile( bool isTransparent, bool isWalkable, Graphic dark )
+         : base( 0, 0, isTransparent, isWalkable )
+      {
+         Dark = dark;
+      }
+
       public Tile()
       {
+         // required empty default constructor
       }
    }
 

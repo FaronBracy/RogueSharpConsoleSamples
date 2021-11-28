@@ -24,10 +24,14 @@ namespace RoguelikeDevTutorial
 
       public void Render( RSWindow mainWindow )
       {
+         mainWindow.RootConsole.Clear();
+
          foreach ( Entity entity in Entities )
          {
             mainWindow.RootConsole.Set( entity.X, entity.Y, entity.Color, RSColor.Black, entity.Character );
          }
+
+         mainWindow.Draw();
       }
    }
 }

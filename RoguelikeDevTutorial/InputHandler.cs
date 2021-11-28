@@ -6,7 +6,9 @@ namespace RoguelikeDevTutorial
    {
       public IAction HandleKey( RSKey key )
       {
-         switch( key.KeyCode )
+         Entity player = Game.Engine.Player;
+
+         switch ( key.KeyCode )
          {
             case RSKeyCode.Escape:
             {
@@ -14,19 +16,19 @@ namespace RoguelikeDevTutorial
             }
             case RSKeyCode.Up:
             {
-               return new MovementAction( 0, -1, Game.Player );
+               return new MovementAction( 0, -1, player );
             }
             case RSKeyCode.Down:
             {
-               return new MovementAction( 0, 1, Game.Player );
+               return new MovementAction( 0, 1, player );
             }
             case RSKeyCode.Left:
             {
-               return new MovementAction( -1, 0, Game.Player );
+               return new MovementAction( -1, 0, player );
             }
             case RSKeyCode.Right:
             {
-               return new MovementAction( 1, 0, Game.Player );
+               return new MovementAction( 1, 0, player );
             }
          }
 

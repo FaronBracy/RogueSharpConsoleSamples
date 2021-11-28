@@ -1,6 +1,6 @@
 ﻿namespace RoguelikeDevTutorial
 {
-   public interface IActor
+   public interface IEntity
    {
       int X { get; set; }
       int Y { get; set; }
@@ -8,7 +8,7 @@
       void Move( int dx, int dy );
    }
 
-   public class Actor : IActor
+   public class Entity : IEntity
    {
       public int X
       {
@@ -22,7 +22,7 @@
          set;
       }
 
-      public Actor( int x, int y )
+      public Entity( int x, int y )
       {
          X = x;
          Y = y;

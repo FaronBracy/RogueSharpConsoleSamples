@@ -26,18 +26,18 @@ namespace RoguelikeDevTutorial
    {
       private readonly int _dx;
       private readonly int _dy;
-      private readonly Actor _actor;
+      private readonly Entity _entity;
 
-      public MovementAction( int dx, int dy, Actor actor )
+      public MovementAction( int dx, int dy, Entity entity )
       {
          _dx = dx;
          _dy = dy;
-         _actor = actor;
+         _entity = entity;
       }
 
       public void Execute()
       {
-         _actor.Move( _dx, _dy );  
+         _entity.Move( _dx, _dy );  
       }
    }
 

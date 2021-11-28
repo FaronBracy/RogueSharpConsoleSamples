@@ -7,6 +7,7 @@ namespace RoguelikeDevTutorial
    {
       public static RSWindow MainWindow { get; private set; }
       public static Entity Player { get; private set; }
+      public static Entity Npc { get; private set; }
       public static InputHandler InputHandler { get; private set; }
 
       public static void Main( string[] args )
@@ -18,6 +19,7 @@ namespace RoguelikeDevTutorial
          int playerY = screenHeight / 2;
 
          Player = new Entity( playerX, playerY, '@', RSColor.White );
+         Npc = new Entity( playerX - 5, playerY - 5, '@', new RSColor( 255, 255, 0 ) );
 
          InputHandler = new InputHandler();
 
@@ -49,7 +51,7 @@ namespace RoguelikeDevTutorial
          //      }
          //   }
          //}
-         
+
          // Kick off the main game loop
          MainWindow.Start();
       }

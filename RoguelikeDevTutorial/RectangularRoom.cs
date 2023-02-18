@@ -12,6 +12,14 @@ namespace RoguelikeDevTutorial
       public int X2 => X1 + Width;
       public int Y2 => Y1 + Height;
 
+      public RectangularRoom( int xLeft, int yTop, int width, int height )
+      {
+         X1 = xLeft;
+         Y1 = yTop;
+         Width = width;
+         Height = height;
+      }
+
       public Point Center
       {
          get
@@ -22,22 +30,6 @@ namespace RoguelikeDevTutorial
          }
       }
 
-      public (Point upperLeft, Point lowerRight) Inner
-      {
-         get
-         {
-            Point upperLeft = new Point( X1 + 1, Y1 + 1 );
-            Point lowerRight = new Point( X2 - 1, Y2 - 1 );
-            return (upperLeft, lowerRight);
-         }
-      }
-
-      public RectangularRoom( int x1, int y1, int width, int height )
-      {
-         X1 = x1;
-         Y1 = y1;
-         Width = width;
-         Height = height;
-      }
+      public Rectangle Inner => new Rectangle(X1 + 1, Y1 + 1, Width - 2, Height - 2 );
    }
 }

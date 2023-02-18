@@ -19,11 +19,11 @@ namespace RoguelikeDevTutorial
          // required empty default constructor
       }
 
-      private void SetTileData( Tile source, Tile destination )
+      public void SetTileData( Tile tileToSet, Tile tileTemplate )
       {
-         source.IsTransparent = destination.IsTransparent;
-         source.IsWalkable = destination.IsWalkable;
-         source.Dark = destination.Dark;
+         tileToSet.IsTransparent = tileTemplate.IsTransparent;
+         tileToSet.IsWalkable = tileTemplate.IsWalkable;
+         tileToSet.Dark = tileTemplate.Dark;
       }
 
       public bool InBounds( int x, int y )

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using RogueSharp;
 using RogueSharp.ConsoleEngine;
 using RogueSharp.MapCreation;
 
@@ -42,7 +43,8 @@ namespace RoguelikeDevTutorial
          MainWindow.Render += MainWindowRender;
          MainWindow.Update += MainWindowUpdate;
 
-         GameMap gameMap = new GameMap( mapWidth, mapHeight );
+         DungeonCreationStrategy dungeonCreationStrategy = new( mapWidth, mapHeight );
+         GameMap gameMap = Map.Create( dungeonCreationStrategy );
 
          Engine = new Engine( new List<Entity> { player, npc }, inputHandler, player, gameMap );
 

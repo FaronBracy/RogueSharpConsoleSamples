@@ -19,5 +19,10 @@ namespace RoguelikeDevTutorial
       public Point Center => Outer.Center;
 
       public Rectangle Inner => new(Left + 1, Top + 1, Width - 2, Height - 2 );
+
+      public bool Intersects( RectangularRoom other )
+      {
+         return Outer.Intersects( other.Outer );
+      }
    }
 }

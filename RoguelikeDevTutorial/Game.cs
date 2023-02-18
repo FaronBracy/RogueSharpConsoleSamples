@@ -43,8 +43,16 @@ namespace RoguelikeDevTutorial
          MainWindow.Render += MainWindowRender;
          MainWindow.Update += MainWindowUpdate;
 
+         // RogueSharp has built in map creation. RandomRooms matches what the tutorial is doing.
+         //RandomRoomsMapCreationStrategy<GameMap, Tile> strategy = new(mapWidth, mapHeight, 30, 10, 6);
+
          DungeonCreationStrategy dungeonCreationStrategy = new( mapWidth, mapHeight );
          GameMap gameMap = Map.Create( dungeonCreationStrategy );
+
+         //foreach ( Tile tile in gameMap.GetAllCells() )
+         //{
+         //   gameMap.SetTileData( tile, tile.IsWalkable ? Tile.Floor : Tile.Wall );
+         //}
 
          Engine = new Engine( new List<Entity> { player, npc }, inputHandler, player, gameMap );
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using RogueSharp;
 using RogueSharp.ConsoleEngine;
+using RogueSharp.MapCreation;
 
 namespace RoguelikeDevTutorial
 {
@@ -20,6 +22,10 @@ namespace RoguelikeDevTutorial
 
          int playerX = screenWidth / 2;
          int playerY = screenHeight / 2;
+
+         int roomMaxSize = 10;
+         int roomMinSize = 6;
+         int maxRooms = 30;
 
          Entity player = new Entity( playerX, playerY, '@', RSColor.White );
          Entity npc = new Entity( playerX - 5, playerY, '@', new RSColor( 255, 255, 0 ) );
@@ -41,9 +47,18 @@ namespace RoguelikeDevTutorial
          MainWindow.Render += MainWindowRender;
          MainWindow.Update += MainWindowUpdate;
 
-         GameMap gameMap = new GameMap( mapWidth, mapHeight );
+         // RogueSharp has built in map creation. RandomRooms matches what the tutorial is doing.
+         //RandomRoomsMapCreationStrategy<GameMap, Tile> strategy = new(mapWidth, mapHeight, 30, 10, 6);
 
-         Engine = new Engine( new List<Entity>{ player, npc }, inputHandler, player, gameMap );
+         DungeonCreationStrategy dungeonCreationStrategy = new( mapWidth, mapHeight, maxRooms, roomMinSize, roomMaxSize, player );
+         GameMap gameMap = Map.Create( dungeonCreationStrategy );
+
+         //foreach ( Tile tile in gameMap.GetAllCells() )
+         //{
+         //   gameMap.SetTileData( tile, tile.IsWalkable ? Tile.Floor : Tile.Wall );
+         //}
+
+         Engine = new Engine( new List<Entity> { player, npc }, inputHandler, player, gameMap );
 
          // Kick off the main game loop
          MainWindow.Start();

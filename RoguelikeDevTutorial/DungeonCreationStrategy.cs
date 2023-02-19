@@ -1,6 +1,9 @@
-﻿using RogueSharp;
+﻿using System.Collections.Generic;
+using System.Linq;
+using RogueSharp;
 using RogueSharp.DiceNotation;
 using RogueSharp.MapCreation;
+using RogueSharp.Random;
 
 namespace RoguelikeDevTutorial
 {
@@ -8,23 +11,63 @@ namespace RoguelikeDevTutorial
    {
       public int Width { get; }
       public int Height { get; }
+      public int MaxRooms { get; }
+      public int RoomMinSize { get; }
+      public int RoomMaxSize { get; }
+      public Entity Player { get; }
+      public List<RectangularRoom> Rooms { get; }
+
       private GameMap _dungeon;
 
-      public DungeonCreationStrategy( int width, int height )
+      public DungeonCreationStrategy( int width, int height, int maxRooms, int roomMinSize, int roomMaxSize, Entity player )
       {
          Width = width;
          Height = height;
+         MaxRooms = maxRooms;
+         RoomMinSize = roomMinSize;
+         RoomMaxSize = roomMaxSize;
+         Player = player;
+         Rooms = new List<RectangularRoom>();
       }
 
       public GameMap CreateMap()
       {
-         _dungeon = new GameMap( Width, Height );
-         RectangularRoom room1 = new RectangularRoom( 20, 15, 10, 15 );
-         RectangularRoom room2 = new RectangularRoom( 35, 15, 10, 15 );
+         IRandom random = new DotNetRandom();
 
-         DigRoom( room1 );
-         DigRoom( room2 );
-         TunnelBetween( room1.Center, room2.Center );
+         _dungeon = new GameMap( Width, Height );
+         for ( int i = 0; i < MaxRooms; i++ )
+         {
+            int roomWidth = random.Next( RoomMinSize, RoomMaxSize );
+            int roomHeight = random.Next( RoomMinSize, RoomMaxSize );
+
+            int x = random.Next( 0, Width - roomWidth - 1 );
+            int y = random.Next( 0, Height - roomHeight - 1 );
+
+            RectangularRoom newRoom = new RectangularRoom( x, y, roomWidth, roomHeight );
+
+            if ( Rooms.Any( r => r.Intersects( newRoom ) ) )
+            {
+               continue;
+            }
+
+            Rectangle inner = newRoom.Inner;
+            foreach ( Tile tile in _dungeon.GetCellsInRectangle( inner.Top, inner.Left, inner.Width, inner.Height ) )
+            {
+               _dungeon.SetTileData( tile, Tile.Floor );
+            }
+
+            if ( Rooms.Count == 0 )
+            {
+               Player.X = newRoom.Center.X;
+               Player.Y = newRoom.Center.Y;
+            }
+            else
+            {
+               TunnelBetween( Rooms.Last().Center, newRoom.Center );
+            }
+
+            Rooms.Add( newRoom );
+         }
 
          return _dungeon;
       }

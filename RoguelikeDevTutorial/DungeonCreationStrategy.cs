@@ -14,18 +14,20 @@ namespace RoguelikeDevTutorial
       public int MaxRooms { get; }
       public int RoomMinSize { get; }
       public int RoomMaxSize { get; }
+      public int MaxMonstersPerRoom { get;  }
       public Entity Player { get; }
       public List<RectangularRoom> Rooms { get; }
 
       private GameMap _dungeon;
 
-      public DungeonCreationStrategy( int width, int height, int maxRooms, int roomMinSize, int roomMaxSize, Entity player )
+      public DungeonCreationStrategy( int width, int height, int maxRooms, int roomMinSize, int roomMaxSize, int maxMonstersPerRoom, Entity player )
       {
          Width = width;
          Height = height;
          MaxRooms = maxRooms;
          RoomMinSize = roomMinSize;
          RoomMaxSize = roomMaxSize;
+         MaxMonstersPerRoom = maxMonstersPerRoom;
          Player = player;
          Rooms = new List<RectangularRoom>();
       }
@@ -51,11 +53,7 @@ namespace RoguelikeDevTutorial
                continue;
             }
 
-            Rectangle inner = newRoom.Inner;
-            foreach ( Tile tile in _dungeon.GetCellsInRectangle( inner.Top, inner.Left, inner.Width, inner.Height ) )
-            {
-               _dungeon.SetTileData( tile, Tile.Floor );
-            }
+            DigRoom( newRoom );
 
             if ( Rooms.Count == 0 )
             {

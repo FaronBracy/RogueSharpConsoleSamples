@@ -25,6 +25,7 @@ namespace RoguelikeDevTutorial
          int roomMaxSize = 10;
          int roomMinSize = 6;
          int maxRooms = 30;
+         int maxMonstersPerRoom = 2;
 
          Entity player = new Entity( playerX, playerY, '@', RSColor.White );
 
@@ -48,7 +49,7 @@ namespace RoguelikeDevTutorial
          // RogueSharp has built in map creation. RandomRooms matches what the tutorial is doing.
          //RandomRoomsMapCreationStrategy<GameMap, Tile> strategy = new(mapWidth, mapHeight, 30, 10, 6);
 
-         DungeonCreationStrategy dungeonCreationStrategy = new( mapWidth, mapHeight, maxRooms, roomMinSize, roomMaxSize, player );
+         DungeonCreationStrategy dungeonCreationStrategy = new( mapWidth, mapHeight, maxRooms, roomMinSize, roomMaxSize, maxMonstersPerRoom, player );
          GameMap gameMap = Map.Create( dungeonCreationStrategy );
 
          //foreach ( Tile tile in gameMap.GetAllCells() )

@@ -66,6 +66,7 @@ namespace RoguelikeDevTutorial
             }
 
             Rooms.Add( newRoom );
+            PlaceEntities( newRoom );
          }
 
          return _dungeon;
@@ -96,6 +97,30 @@ namespace RoguelikeDevTutorial
          foreach ( Tile tile in _dungeon.GetCellsAlongLine( end.X, end.Y, corner.X, corner.Y ) )
          {
             _dungeon.SetTileData( tile, Tile.Floor );
+         }
+      }
+
+      private void PlaceEntities( RectangularRoom room )
+      {
+         IRandom random = new DotNetRandom();
+         int numberOfMonsters = random.Next( 0, MaxMonstersPerRoom );
+
+         for ( int i = 0; i < numberOfMonsters; i++ )
+         {
+            int x = random.Next( room.Inner.Left, room.Inner.Right );
+            int y = random.Next( room.Inner.Top, room.Inner.Bottom );
+
+            if ( !_dungeon.Entities.Any( e => e.X == x && e.Y == y ) )
+            {
+               if ( random.Next( 1, 100 ) < 80 )
+               {
+                  // Place an Orc here
+               }
+               else
+               {
+                  // Place a Troll here
+               }
+            }
          }
       }
    }

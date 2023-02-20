@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using RogueSharp;
 using RogueSharp.ConsoleEngine;
 using RogueSharp.MapCreation;
@@ -28,7 +27,6 @@ namespace RoguelikeDevTutorial
          int maxRooms = 30;
 
          Entity player = new Entity( playerX, playerY, '@', RSColor.White );
-         Entity npc = new Entity( playerX - 5, playerY, '@', new RSColor( 255, 255, 0 ) );
 
          InputHandler inputHandler = new InputHandler();
 
@@ -58,7 +56,7 @@ namespace RoguelikeDevTutorial
          //   gameMap.SetTileData( tile, tile.IsWalkable ? Tile.Floor : Tile.Wall );
          //}
 
-         Engine = new Engine( new List<Entity> { player, npc }, inputHandler, player, gameMap );
+         Engine = new Engine( inputHandler, player, gameMap );
 
          // Kick off the main game loop
          MainWindow.Start();

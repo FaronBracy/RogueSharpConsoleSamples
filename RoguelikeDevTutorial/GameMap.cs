@@ -1,13 +1,17 @@
-﻿using RogueSharp;
+﻿using System.Collections.Generic;
+using RogueSharp;
 using RogueSharp.ConsoleEngine;
 
 namespace RoguelikeDevTutorial
 {
    public class GameMap : Map<Tile>
    {
+      public List<Entity> Entities { get; private set; }
+
       public GameMap( int width, int height )
          : base( width, height )
       {
+         Entities = new List<Entity>();
          foreach( Tile tile in GetAllCells() )
          {
             SetTileData( tile, Tile.Wall );
@@ -50,6 +54,14 @@ namespace RoguelikeDevTutorial
             else
             {
                mainWindow.RootConsole.Set( tile.X, tile.Y, tile.Shroud.Foreground, tile.Shroud.Background, tile.Shroud.Character );
+            }
+         }
+
+         foreach ( Entity entity in Entities )
+         {
+            if ( this[entity.X, entity.Y].IsVisible )
+            {
+               mainWindow.RootConsole.Set( entity.X, entity.Y, entity.Color, RSColor.Black, entity.Character );
             }
          }
       }

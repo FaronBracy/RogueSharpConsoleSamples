@@ -35,6 +35,7 @@ namespace RoguelikeDevTutorial
          IRandom random = new DotNetRandom();
 
          _dungeon = new GameMap( Width, Height );
+         _dungeon.Entities.Add( Player );
          for ( int i = 0; i < MaxRooms; i++ )
          {
             int roomWidth = random.Next( RoomMinSize, RoomMaxSize );

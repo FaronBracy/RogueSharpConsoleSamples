@@ -3,27 +3,24 @@ using RogueSharp.ConsoleEngine;
 
 namespace RoguelikeDevTutorial
 {
-   public class Graphic
-   {
-      public char Character { get; set; }
-      public RSColor Foreground { get; set; }
-      public RSColor Background { get; set; }
-   }
-
    public class Tile : Cell
    {
-      public static Tile Floor => new Tile( true, true, new Graphic { Character = ' ', Foreground = new RSColor( 255, 255, 255 ), Background = new RSColor( 50, 50, 150 ) } );
-      public static Tile Wall => new Tile( true, false, new Graphic { Character = ' ', Foreground = new RSColor( 255, 255, 255 ), Background = new RSColor( 0, 0, 100 ) } );
+      private static readonly RSColor White = new(255, 255, 255);
+      private static readonly RSColor FloorColor = new( 50, 50, 150 );
+      private static readonly RSColor WallColor = new( 0, 0, 100 );
 
-      public Graphic Dark { get; set; }
+      public static Tile Floor => new Tile( true, true, new RSCell( ' ', White, FloorColor ) );
+      public static Tile Wall => new Tile( false, false, new RSCell (' ', White,  WallColor ) );
 
-      public Tile( int x, int y, bool isTransparent, bool isWalkable, Graphic dark )
+      public RSCell Dark { get; set; }
+
+      public Tile( int x, int y, bool isTransparent, bool isWalkable, RSCell dark )
          : base( x, y, isTransparent, isWalkable )
       {
          Dark = dark;
       }
 
-      public Tile( bool isTransparent, bool isWalkable, Graphic dark )
+      public Tile( bool isTransparent, bool isWalkable, RSCell dark )
          : base( 0, 0, isTransparent, isWalkable )
       {
          Dark = dark;
@@ -32,22 +29,6 @@ namespace RoguelikeDevTutorial
       public Tile()
       {
          // required empty default constructor
-      }
-   }
-
-   public class Floor : Tile
-   {
-      public Floor()
-         : base( 0, 0, true, true, new Graphic { Character = ' ', Foreground = new RSColor( 255, 255, 255 ), Background = new RSColor( 50, 50, 150 ) } )
-      {
-      }
-   }
-
-   public class Wall : Tile
-   {
-      public Wall( int x, int y )
-         : base( x, y, true, true, new Graphic { Character = ' ', Foreground = new RSColor( 255, 255, 255 ), Background = new RSColor( 0, 0, 100 ) } )
-      {
       }
    }
 }

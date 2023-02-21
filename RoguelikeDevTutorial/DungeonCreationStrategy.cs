@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RogueSharp;
 using RogueSharp.DiceNotation;
@@ -34,17 +35,15 @@ namespace RoguelikeDevTutorial
 
       public GameMap CreateMap()
       {
-         IRandom random = new DotNetRandom();
-
          _dungeon = new GameMap( Width, Height );
          _dungeon.Entities.Add( Player );
          for ( int i = 0; i < MaxRooms; i++ )
          {
-            int roomWidth = random.Next( RoomMinSize, RoomMaxSize );
-            int roomHeight = random.Next( RoomMinSize, RoomMaxSize );
+            int roomWidth = Game.Random.Next( RoomMinSize, RoomMaxSize );
+            int roomHeight = Game.Random.Next( RoomMinSize, RoomMaxSize );
 
-            int x = random.Next( 0, Width - roomWidth - 1 );
-            int y = random.Next( 0, Height - roomHeight - 1 );
+            int x = Game.Random.Next( 0, Width - roomWidth - 1 );
+            int y = Game.Random.Next( 0, Height - roomHeight - 1 );
 
             RectangularRoom newRoom = new RectangularRoom( x, y, roomWidth, roomHeight );
 
@@ -62,11 +61,11 @@ namespace RoguelikeDevTutorial
             }
             else
             {
+               PlaceEntities( newRoom );
                TunnelBetween( Rooms.Last().Center, newRoom.Center );
             }
 
             Rooms.Add( newRoom );
-            PlaceEntities( newRoom );
          }
 
          return _dungeon;
@@ -102,23 +101,26 @@ namespace RoguelikeDevTutorial
 
       private void PlaceEntities( RectangularRoom room )
       {
-         IRandom random = new DotNetRandom();
-         int numberOfMonsters = random.Next( 0, MaxMonstersPerRoom );
+         int numberOfMonsters = Game.Random.Next( 0, MaxMonstersPerRoom );
 
          for ( int i = 0; i < numberOfMonsters; i++ )
          {
-            int x = random.Next( room.Inner.Left, room.Inner.Right );
-            int y = random.Next( room.Inner.Top, room.Inner.Bottom );
+            int x = Game.Random.Next( room.Inner.Left, room.Inner.Right );
+            int y = Game.Random.Next( room.Inner.Top, room.Inner.Bottom );
 
             if ( !_dungeon.Entities.Any( e => e.X == x && e.Y == y ) )
             {
-               if ( random.Next( 1, 100 ) < 80 )
+               if ( Game.Random.Next( 1, 100 ) < 80 )
                {
+                  Console.WriteLine($"Spawn orc at {x}, {y}");
                   // Place an Orc here
+                  Entity.Orc.Spawn( _dungeon, x, y );
                }
                else
                {
+                  Console.WriteLine( $"Spawn troll at {x}, {y}" );
                   // Place a Troll here
+                  Entity.Troll.Spawn( _dungeon, x, y );
                }
             }
          }

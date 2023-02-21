@@ -2,6 +2,7 @@
 using RogueSharp;
 using RogueSharp.ConsoleEngine;
 using RogueSharp.MapCreation;
+using RogueSharp.Random;
 
 namespace RoguelikeDevTutorial
 {
@@ -11,6 +12,8 @@ namespace RoguelikeDevTutorial
 
       public static Engine Engine { get; private set; }
 
+      public static IRandom Random { get; private set; }
+
       public static void Main( string[] args )
       {
          int screenWidth = 80;
@@ -18,16 +21,15 @@ namespace RoguelikeDevTutorial
 
          int mapWidth = 80;
          int mapHeight = 45;
-
-         int playerX = screenWidth / 2;
-         int playerY = screenHeight / 2;
-
+         
          int roomMaxSize = 10;
          int roomMinSize = 6;
          int maxRooms = 30;
          int maxMonstersPerRoom = 2;
 
-         Entity player = new Entity( playerX, playerY, '@', RSColor.White );
+         Entity player = Entity.Player;
+
+         Random = new DotNetRandom();
 
          InputHandler inputHandler = new InputHandler();
 

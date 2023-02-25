@@ -39,6 +39,19 @@ namespace RoguelikeDevTutorial
          return 0 <= x && x < Width && 0 <= y && 0 < Height;
       }
 
+      public Entity GetBlockingEntityAtLocation( int x, int y )
+      {
+         foreach ( Entity entity in Entities )
+         {
+            if ( entity.BlocksMovement && entity.X == x && entity.Y == y )
+            {
+               return entity;
+            }
+         }
+
+         return null;
+      }
+
       public void Render( RSWindow mainWindow )
       {
          foreach( Tile tile in GetAllCells() )

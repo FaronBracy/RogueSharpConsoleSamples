@@ -22,10 +22,17 @@ namespace RoguelikeDevTutorial
       }
    }
 
-   public class MovementAction : IAction
+   public abstract class ActionWithDirection : IAction
    {
-      private readonly int _dx;
-      private readonly int _dy;
+      protected int _dx;
+      protected int _dy;
+
+      public abstract void Perform();
+   }
+
+
+   public class MovementAction : ActionWithDirection
+   {
       private readonly Entity _entity;
       private readonly Engine _engine;
 
@@ -37,7 +44,7 @@ namespace RoguelikeDevTutorial
          _engine = engine;
       }
 
-      public void Perform()
+      public override void Perform()
       {
          int destinationX = _entity.X + _dx;
          int destinationY = _entity.Y + _dy;
@@ -47,6 +54,10 @@ namespace RoguelikeDevTutorial
             return;
          }
          if ( !_engine.GameMap.GetCell( destinationX, destinationY ).IsWalkable )
+         {
+            return;
+         }
+         if ( _engine.GameMap.GetBlockingEntityAtLocation( destinationX, destinationY ) != null )
          {
             return;
          }

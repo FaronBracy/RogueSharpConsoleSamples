@@ -1,4 +1,5 @@
-﻿using RogueSharp.ConsoleEngine;
+﻿using System;
+using RogueSharp.ConsoleEngine;
 
 namespace RoguelikeDevTutorial
 {
@@ -24,18 +25,16 @@ namespace RoguelikeDevTutorial
 
    public abstract class ActionWithDirection : IAction
    {
+      protected Entity _entity;
+      protected Engine _engine;
       protected int _dx;
       protected int _dy;
 
       public abstract void Perform();
    }
-
-
+   
    public class MovementAction : ActionWithDirection
    {
-      private readonly Entity _entity;
-      private readonly Engine _engine;
-
       public MovementAction( int dx, int dy, Entity entity, Engine engine )
       {
          _dx = dx;
@@ -62,6 +61,28 @@ namespace RoguelikeDevTutorial
             return;
          }
          _entity.Move( _dx, _dy );  
+      }
+   }
+
+   public class MeleeAction : ActionWithDirection
+   {
+      public MeleeAction( int dx, int dy, Entity entity, Engine engine )
+      {
+         _dx = dx;
+         _dy = dy;
+         _entity = entity;
+         _engine = engine;
+      }
+
+      public override void Perform()
+      {
+         int destinationX = _entity.X + _dx;
+         int destinationY = _entity.Y + _dy;
+         Entity target = _engine.GameMap.GetBlockingEntityAtLocation( destinationX, destinationY );
+         if ( target != null )
+         {
+            Console.WriteLine( $"You kick the {target.Name}, much to its annoyance!" );
+         }
       }
    }
 

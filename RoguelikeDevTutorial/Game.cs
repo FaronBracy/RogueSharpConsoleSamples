@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using RogueSharp;
 using RogueSharp.ConsoleEngine;
 using RogueSharp.MapCreation;
+using RogueSharp.Random;
 
 namespace RoguelikeDevTutorial
 {
@@ -12,6 +12,8 @@ namespace RoguelikeDevTutorial
 
       public static Engine Engine { get; private set; }
 
+      public static IRandom Random { get; private set; }
+
       public static void Main( string[] args )
       {
          int screenWidth = 80;
@@ -19,16 +21,15 @@ namespace RoguelikeDevTutorial
 
          int mapWidth = 80;
          int mapHeight = 45;
-
-         int playerX = screenWidth / 2;
-         int playerY = screenHeight / 2;
-
+         
          int roomMaxSize = 10;
          int roomMinSize = 6;
          int maxRooms = 30;
+         int maxMonstersPerRoom = 2;
 
-         Entity player = new Entity( playerX, playerY, '@', RSColor.White );
-         Entity npc = new Entity( playerX - 5, playerY, '@', new RSColor( 255, 255, 0 ) );
+         Entity player = Entity.Player;
+
+         Random = new DotNetRandom();
 
          InputHandler inputHandler = new InputHandler();
 
@@ -50,7 +51,7 @@ namespace RoguelikeDevTutorial
          // RogueSharp has built in map creation. RandomRooms matches what the tutorial is doing.
          //RandomRoomsMapCreationStrategy<GameMap, Tile> strategy = new(mapWidth, mapHeight, 30, 10, 6);
 
-         DungeonCreationStrategy dungeonCreationStrategy = new( mapWidth, mapHeight, maxRooms, roomMinSize, roomMaxSize, player );
+         DungeonCreationStrategy dungeonCreationStrategy = new( mapWidth, mapHeight, maxRooms, roomMinSize, roomMaxSize, maxMonstersPerRoom, player );
          GameMap gameMap = Map.Create( dungeonCreationStrategy );
 
          //foreach ( Tile tile in gameMap.GetAllCells() )
@@ -58,7 +59,7 @@ namespace RoguelikeDevTutorial
          //   gameMap.SetTileData( tile, tile.IsWalkable ? Tile.Floor : Tile.Wall );
          //}
 
-         Engine = new Engine( new List<Entity> { player, npc }, inputHandler, player, gameMap );
+         Engine = new Engine( inputHandler, player, gameMap );
 
          // Kick off the main game loop
          MainWindow.Start();
@@ -72,7 +73,7 @@ namespace RoguelikeDevTutorial
 
       private static void MainWindowKeyDown( object sender, KeyEventArgs e )
       {
-         Console.WriteLine( $"KeyDown - {e.Key.KeyCode} - {e.Key.KeyScanCode} - {e.Key.KeyModifier}" );
+         //Console.WriteLine( $"KeyDown - {e.Key.KeyCode} - {e.Key.KeyScanCode} - {e.Key.KeyModifier}" );
 
          Engine.HandleInput( e.Key );
       }

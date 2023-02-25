@@ -32,7 +32,7 @@ namespace RoguelikeDevTutorial
 
       public abstract void Perform();
    }
-   
+
    public class MovementAction : ActionWithDirection
    {
       public MovementAction( int dx, int dy, Entity entity, Engine engine )
@@ -60,7 +60,7 @@ namespace RoguelikeDevTutorial
          {
             return;
          }
-         _entity.Move( _dx, _dy );  
+         _entity.Move( _dx, _dy );
       }
    }
 
@@ -82,6 +82,32 @@ namespace RoguelikeDevTutorial
          if ( target != null )
          {
             Console.WriteLine( $"You kick the {target.Name}, much to its annoyance!" );
+         }
+      }
+   }
+
+   public class BumpAction : ActionWithDirection
+   {
+      public BumpAction( int dx, int dy, Entity entity, Engine engine )
+      {
+         _dx = dx;
+         _dy = dy;
+         _entity = entity;
+         _engine = engine;
+      }
+
+      public override void Perform()
+      {
+         int destinationX = _entity.X + _dx;
+         int destinationY = _entity.Y + _dy;
+         Entity target = _engine.GameMap.GetBlockingEntityAtLocation( destinationX, destinationY );
+         if ( target != null )
+         {
+            new MeleeAction( _dx, _dy, _entity, _engine ).Perform();
+         }
+         else
+         {
+            new MovementAction( _dx, _dy, _entity, _engine ).Perform();
          }
       }
    }

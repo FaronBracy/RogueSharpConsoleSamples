@@ -73,7 +73,7 @@ namespace RoguelikeDevTutorial
 
       private static void MainWindowKeyDown( object sender, KeyEventArgs e )
       {
-         Console.WriteLine( $"KeyDown - {e.Key.KeyCode} - {e.Key.KeyScanCode} - {e.Key.KeyModifier}" );
+         //Console.WriteLine( $"KeyDown - {e.Key.KeyCode} - {e.Key.KeyScanCode} - {e.Key.KeyModifier}" );
 
          Engine.HandleInput( e.Key );
       }

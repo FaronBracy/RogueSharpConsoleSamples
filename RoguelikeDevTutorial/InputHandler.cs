@@ -16,19 +16,19 @@ namespace RoguelikeDevTutorial
             }
             case RSKeyCode.Up:
             {
-               return new MovementAction( 0, -1, player, engine );
+               return new BumpAction( 0, -1, player, engine );
             }
             case RSKeyCode.Down:
             {
-               return new MovementAction( 0, 1, player, engine );
+               return new BumpAction( 0, 1, player, engine );
             }
             case RSKeyCode.Left:
             {
-               return new MovementAction( -1, 0, player, engine );
+               return new BumpAction( -1, 0, player, engine );
             }
             case RSKeyCode.Right:
             {
-               return new MovementAction( 1, 0, player, engine );
+               return new BumpAction( 1, 0, player, engine );
             }
          }
 

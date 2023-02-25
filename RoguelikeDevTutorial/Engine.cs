@@ -1,4 +1,5 @@
-﻿using RogueSharp;
+﻿using System;
+using RogueSharp;
 using RogueSharp.ConsoleEngine;
 
 namespace RoguelikeDevTutorial
@@ -23,7 +24,16 @@ namespace RoguelikeDevTutorial
       {
          IAction action = InputHandler.HandleKey( key, this );
          action.Perform();
+         HandleEnemyTurns();
          UpdateFieldOfView();
+      }
+
+      public void HandleEnemyTurns()
+      {
+         foreach ( Entity entity in GameMap.Entities )
+         {
+            Console.WriteLine( $"The {entity.Name} wonders when it will get to take a real turn." );
+         }
       }
 
       public void UpdateFieldOfView()

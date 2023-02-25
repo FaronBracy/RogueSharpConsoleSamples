@@ -23,40 +23,49 @@ namespace RoguelikeDevTutorial
       }
    }
 
-   public abstract class ActionWithDirection : IAction
+   public class ActionWithDirection : IAction
    {
-      protected Entity _entity;
-      protected Engine _engine;
       protected int _dx;
       protected int _dy;
+      protected Entity _entity;
+      protected Engine _engine;
+      protected int _destinationX;
+      protected int _destinationY;
+      protected Entity _target;
 
-      public abstract void Perform();
-   }
-
-   public class MovementAction : ActionWithDirection
-   {
-      public MovementAction( int dx, int dy, Entity entity, Engine engine )
+      public ActionWithDirection( int dx, int dy, Entity entity, Engine engine )
       {
          _dx = dx;
          _dy = dy;
          _entity = entity;
          _engine = engine;
+         _destinationX = _entity.X + dx;
+         _destinationY = _entity.Y + dy;
+         _target = _engine.GameMap.GetBlockingEntityAtLocation( _destinationX, _destinationY );
       }
+
+      public virtual void Perform()
+      {
+         throw new NotImplementedException();
+      }
+   }
+
+   public class MovementAction : ActionWithDirection
+   {
+      public MovementAction( int dx, int dy, Entity entity, Engine engine )
+         : base( dx, dy, entity, engine ) { }
 
       public override void Perform()
       {
-         int destinationX = _entity.X + _dx;
-         int destinationY = _entity.Y + _dy;
-
-         if ( !_engine.GameMap.InBounds( destinationX, destinationY ) )
+         if ( !_engine.GameMap.InBounds( _destinationX, _destinationY ) )
          {
             return;
          }
-         if ( !_engine.GameMap.GetCell( destinationX, destinationY ).IsWalkable )
+         if ( !_engine.GameMap.GetCell( _destinationX, _destinationY ).IsWalkable )
          {
             return;
          }
-         if ( _engine.GameMap.GetBlockingEntityAtLocation( destinationX, destinationY ) != null )
+         if ( _target != null )
          {
             return;
          }
@@ -67,21 +76,13 @@ namespace RoguelikeDevTutorial
    public class MeleeAction : ActionWithDirection
    {
       public MeleeAction( int dx, int dy, Entity entity, Engine engine )
-      {
-         _dx = dx;
-         _dy = dy;
-         _entity = entity;
-         _engine = engine;
-      }
+         : base( dx, dy, entity, engine ) { }
 
       public override void Perform()
       {
-         int destinationX = _entity.X + _dx;
-         int destinationY = _entity.Y + _dy;
-         Entity target = _engine.GameMap.GetBlockingEntityAtLocation( destinationX, destinationY );
-         if ( target != null )
+         if ( _target != null )
          {
-            Console.WriteLine( $"You kick the {target.Name}, much to its annoyance!" );
+            Console.WriteLine( $"You kick the {_target.Name}, much to its annoyance!" );
          }
       }
    }
@@ -89,19 +90,11 @@ namespace RoguelikeDevTutorial
    public class BumpAction : ActionWithDirection
    {
       public BumpAction( int dx, int dy, Entity entity, Engine engine )
-      {
-         _dx = dx;
-         _dy = dy;
-         _entity = entity;
-         _engine = engine;
-      }
+         : base( dx, dy, entity, engine ) { }
 
       public override void Perform()
       {
-         int destinationX = _entity.X + _dx;
-         int destinationY = _entity.Y + _dy;
-         Entity target = _engine.GameMap.GetBlockingEntityAtLocation( destinationX, destinationY );
-         if ( target != null )
+         if ( _target != null )
          {
             new MeleeAction( _dx, _dy, _entity, _engine ).Perform();
          }

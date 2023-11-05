@@ -5,6 +5,10 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoBattler", "AutoBattler.csproj", "{D7EB8AF6-6188-4727-95F8-9B38E93FBF48}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RogueSharp.ConsoleEngine", "..\..\RogueSharp.Console\RogueSharp.ConsoleEngine\RogueSharp.ConsoleEngine.csproj", "{2D06F07F-EF3F-4393-8DD0-17F0143EF4EF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RogueSharp", "..\..\RogueSharp\RogueSharp\RogueSharp.csproj", "{856F20DC-6625-447C-AAE5-055FBF7EF446}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{D7EB8AF6-6188-4727-95F8-9B38E93FBF48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7EB8AF6-6188-4727-95F8-9B38E93FBF48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7EB8AF6-6188-4727-95F8-9B38E93FBF48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D06F07F-EF3F-4393-8DD0-17F0143EF4EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D06F07F-EF3F-4393-8DD0-17F0143EF4EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D06F07F-EF3F-4393-8DD0-17F0143EF4EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D06F07F-EF3F-4393-8DD0-17F0143EF4EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{856F20DC-6625-447C-AAE5-055FBF7EF446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{856F20DC-6625-447C-AAE5-055FBF7EF446}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{856F20DC-6625-447C-AAE5-055FBF7EF446}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{856F20DC-6625-447C-AAE5-055FBF7EF446}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

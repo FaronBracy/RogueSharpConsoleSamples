@@ -6,15 +6,16 @@ namespace AutoBattler
    {
       public static List<Animation> Animations = new List<Animation>();
 
-      public static void AddAnimation( Animation animation )
+      public static void AddAnimation(long startOffsetMs, Animation animation )
       {
-         Console.WriteLine( "Adding Animation" );
-         animation.StartTimeMs = Game.MainWindow.Stopwatch.ElapsedMilliseconds;
+         animation.StartTimeMs = Game.MainWindow.Stopwatch.ElapsedMilliseconds + startOffsetMs;
+         Console.WriteLine( $"Adding Animation at {animation.StartTimeMs}" );
          Animations.Add( animation );
       }
 
       public static void RemoveAnimation( Animation animation )
       {
+         // TODO: Expire the animation so it will remove on the next update
          Console.WriteLine( "Removing Animation" );
          Animations.Remove( animation );
       }
@@ -23,7 +24,10 @@ namespace AutoBattler
       {
          foreach ( Animation animation in Animations )
          {
-            animation.Update( e );
+            if ( animation.StartTimeMs <= Game.MainWindow.Stopwatch.ElapsedMilliseconds )
+            {
+               animation.Update( e );
+            }
          }
 
          Animations.RemoveAll( animation => animation.IsComplete );
@@ -33,7 +37,10 @@ namespace AutoBattler
       {
          foreach ( Animation animation in Animations )
          {
-            animation.Render( e );
+            if ( animation.StartTimeMs <= Game.MainWindow.Stopwatch.ElapsedMilliseconds )
+            {
+               animation.Render( e );
+            }
          }
       }
    }

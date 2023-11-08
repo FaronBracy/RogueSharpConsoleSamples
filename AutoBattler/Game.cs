@@ -16,23 +16,19 @@ public static class Game
       MainWindow.KeyDown += MainWindowKeyDown;
       MainWindow.Quitting += MainWindowQuitting;
 
-      for ( int x = 5; x < 10; x++ )
+      for ( int x = 5; x < 50; x++ )
       {
-         Animation animation = new Animation( 10000, RSColor.White, RSColor.Red, x, 5 );
-         AnimationManager.AddAnimation( animation );
+         Animation animation = new Animation( 1000, new RSColor(1, 0, 0), new RSColor(255,0,0), x, 5 );
+         AnimationManager.AddAnimation( (x - 4) * 10, animation );
       }
-
+       
 
       MainWindow.Start();
    }
 
    private static void MainWindowUpdate( object? sender, FrameEventArgs e )
    {
-      foreach ( Animation animation in AnimationManager.Animations )
-      {
-         animation.Update( e );
-         AnimationManager.Update( e );
-      }
+      AnimationManager.Update( e );
    }
 
    private static void MainWindowRender( object? sender, FrameEventArgs e )

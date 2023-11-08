@@ -25,8 +25,9 @@ namespace AutoBattler
 
       public void Update( FrameEventArgs e )
       {
-         double percentComplete = ( (double) e.TotalElapsedMs - StartTimeMs ) / DurationMs;
-         CurrentColor = RSColor.Blend( StartColor, EndColor, (float) percentComplete );
+         float percentComplete = ( (float) e.TotalElapsedMs - StartTimeMs ) / DurationMs;
+         CurrentColor = RSColor.Blend( StartColor, EndColor, percentComplete );
+         Console.WriteLine( CurrentColor.ToString() );
       }
 
       public void Render( FrameEventArgs e )

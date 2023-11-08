@@ -5,8 +5,7 @@ namespace AutoBattler;
 public static class Game
 {
    public static RSWindow MainWindow { get; private set; }
-   public static List<Animation> Animations = new List<Animation>();
-
+   
    public static void Main()
    {
       BitmapFont bitmapFont = new BitmapFont( 10, 10, 16, 16, "qbicfeet_10x10.png", BitmapFontLayout.Cp437 );
@@ -17,17 +16,22 @@ public static class Game
       MainWindow.KeyDown += MainWindowKeyDown;
       MainWindow.Quitting += MainWindowQuitting;
 
-      Animation animation = new Animation( 10000, RSColor.White, RSColor.Red );
-      Animations.Add( animation );
+      for ( int x = 5; x < 10; x++ )
+      {
+         Animation animation = new Animation( 10000, RSColor.White, RSColor.Red, x, 5 );
+         AnimationManager.AddAnimation( animation );
+      }
+
 
       MainWindow.Start();
    }
 
    private static void MainWindowUpdate( object? sender, FrameEventArgs e )
    {
-      foreach ( Animation animation in Animations )
+      foreach ( Animation animation in AnimationManager.Animations )
       {
          animation.Update( e );
+         AnimationManager.Update( e );
       }
    }
 
@@ -35,11 +39,7 @@ public static class Game
    {
       MainWindow.RootConsole.Clear();
       MainWindow.RootConsole.SetChar( 5, 5, '@' );
-      foreach ( Animation animation in Animations )
-      {
-         // TODO: After animation is complete, remove it from the list
-         animation.Render( e );
-      }
+      AnimationManager.Render( e );
       MainWindow.Draw();
    }
 

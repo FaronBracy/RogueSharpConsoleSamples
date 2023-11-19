@@ -1,9 +1,11 @@
-﻿using RogueSharp.ConsoleEngine;
+﻿using RogueSharp;
+using RogueSharp.ConsoleEngine;
 
 namespace AutoBattler;
 
 public static class Game
 {
+   public static Map Map { get; private set; }
    public static RSWindow MainWindow { get; private set; }
    public static RSMouse Mouse { get; private set; }
 
@@ -20,11 +22,18 @@ public static class Game
       MainWindow.KeyDown += MainWindowKeyDown;
       MainWindow.Quitting += MainWindowQuitting;
 
-      for ( int x = 5; x < 50; x++ )
+      Map = new Map( 100, 50 );
+      foreach ( Cell cell in Map.GetAllCells() )
       {
-         Animation animation = new Animation( 1000, new RSColor(1, 0, 0), new RSColor(255,0,0), x, 5 );
-         AnimationManager.AddAnimation( (x - 4) * 10, animation );
+         Map.SetCellProperties( cell.X, cell.Y, true, true );
       }
+      
+
+      //for ( int x = 5; x < 50; x++ )
+      //{
+      //   Animation animation = new Animation( 1000, new RSColor(1, 0, 0), new RSColor(255,0,0), x, 5 );
+      //   AnimationManager.AddAnimation( (x - 4) * 10, animation );
+      //}
        
 
       MainWindow.Start();
@@ -49,6 +58,9 @@ public static class Game
    private static void MainWindowMouseDown( object? sender, MouseEventArgs e )
    {
       Console.WriteLine( e );
+      LineAnimation lineAnimation = new LineAnimation( 1000, 10, new Point( 5, 5 ), new Point( Mouse.X, Mouse.Y )
+         , new RSColor( 255, 0, 0 ), new RSColor( 1, 0, 0 ), '*' );
+      lineAnimation.Begin();
    }
 
    private static void MainWindowMouseMove( object? sender, MouseEventArgs e )

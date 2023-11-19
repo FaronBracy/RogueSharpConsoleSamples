@@ -24,16 +24,58 @@ namespace AutoBattler
          Y = y;
       }
 
-      public void Update( FrameEventArgs e )
+      public virtual void Update( FrameEventArgs e )
+      {
+      }
+      
+      public virtual void Render( FrameEventArgs e )
+      {
+      }
+   }
+
+   public class BackgroundAnimation : Animation
+   {
+      public BackgroundAnimation( long durationMs, RSColor startColor, RSColor endColor, int x, int y ) : base(
+         durationMs, startColor, endColor, x, y )
+      {
+      }
+
+      public override void Update( FrameEventArgs e )
+      {
+         //float amount = ( (float) e.TotalElapsedMs - StartTimeMs ) / DurationMs;
+         CurrentColor = StartColor;
+         //CurrentColor = RSColor.Lerp( StartColor, EndColor, amount );
+         //Console.WriteLine( $"Updating Animation at {e.TotalElapsedMs} - {CurrentColor} - {amount}" );
+      }
+      public override void Render( FrameEventArgs e )
+      {
+         Game.MainWindow.RootConsole.SetBackColor( X, Y, CurrentColor );
+      }
+   }
+
+   public class SymbolAnimation : Animation
+   {
+      public char StartSymbol { get; set; }
+      public char EndSymbol { get; set; }
+
+      public SymbolAnimation( long durationMs, char startSymbol, char endSymbol, RSColor startColor, RSColor endColor,
+         int x, int y ) : base( durationMs, startColor, endColor, x, y )
+      {
+         StartSymbol = startSymbol;
+         EndSymbol = endSymbol;
+      }
+
+      public override void Update( FrameEventArgs e )
       {
          float amount = ( (float) e.TotalElapsedMs - StartTimeMs ) / DurationMs;
          CurrentColor = RSColor.Lerp( StartColor, EndColor, amount );
          //Console.WriteLine( $"Updating Animation at {e.TotalElapsedMs} - {CurrentColor} - {amount}" );
       }
 
-      public void Render( FrameEventArgs e )
+      public override void Render( FrameEventArgs e )
       {
-         Game.MainWindow.RootConsole.SetBackColor( X, Y, CurrentColor );
+         Game.MainWindow.RootConsole.SetChar( X, Y, StartSymbol );
+         Game.MainWindow.RootConsole.SetColor( X, Y, CurrentColor );
       }
    }
 
@@ -64,8 +106,10 @@ namespace AutoBattler
          foreach ( Cell cell in Game.Map.GetCellsAlongLine( Start.X, Start.Y, End.X, End.Y ) )
          {
             //Console.WriteLine( $"{cell.X},{cell.Y}" );
-            Animation animation = new Animation( DurationMs, StartColor, EndColor, cell.X, cell.Y );
+            BackgroundAnimation animation = new BackgroundAnimation( DurationMs, StartColor, EndColor, cell.X, cell.Y );
             AnimationManager.AddAnimation( ++i * SpeedMs, animation );
+            SymbolAnimation symbolAnimation = new SymbolAnimation( SpeedMs, Symbol, Symbol, RSColor.White, RSColor.White, cell.X, cell.Y );
+            AnimationManager.AddAnimation( i * SpeedMs, symbolAnimation );
          }
       }
    }

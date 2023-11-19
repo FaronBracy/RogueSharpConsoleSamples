@@ -5,14 +5,18 @@ namespace AutoBattler;
 public static class Game
 {
    public static RSWindow MainWindow { get; private set; }
-   
+   public static RSMouse Mouse { get; private set; }
+
    public static void Main()
    {
       BitmapFont bitmapFont = new BitmapFont( 10, 10, 16, 16, "qbicfeet_10x10.png", BitmapFontLayout.Cp437 );
+      Mouse = new RSMouse();
 
       MainWindow = new RSWindow( bitmapFont, 100, 50, "Auto Battler" );
       MainWindow.Update += MainWindowUpdate;
       MainWindow.Render += MainWindowRender;
+      MainWindow.MouseDown += MainWindowMouseDown;
+      MainWindow.MouseMove += MainWindowMouseMove;
       MainWindow.KeyDown += MainWindowKeyDown;
       MainWindow.Quitting += MainWindowQuitting;
 
@@ -35,8 +39,21 @@ public static class Game
    {
       MainWindow.RootConsole.Clear();
       MainWindow.RootConsole.SetChar( 5, 5, '@' );
+      MainWindow.RootConsole.SetChar( Mouse.X, Mouse.Y, '.' );
+      MainWindow.RootConsole.SetColor( Mouse.X, Mouse.Y, new RSColor( 255, 0, 0 ) );
+      MainWindow.RootConsole.SetBackColor( Mouse.X, Mouse.Y, new RSColor( 0, 0, 255 ) );
       AnimationManager.Render( e );
       MainWindow.Draw();
+   }
+
+   private static void MainWindowMouseDown( object? sender, MouseEventArgs e )
+   {
+      Console.WriteLine( e );
+   }
+
+   private static void MainWindowMouseMove( object? sender, MouseEventArgs e )
+   {
+      Mouse = e.Mouse;
    }
 
    private static void MainWindowKeyDown( object? sender, KeyEventArgs e )

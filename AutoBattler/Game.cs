@@ -62,7 +62,7 @@ public static class Game
       //Effects.ShootArrow( new Point( 5, 5 ), new Point( Mouse.X, Mouse.Y ) );
       CircleAnimation circleAnimation = new CircleAnimation( 1000, 50, new Point( Mouse.X, Mouse.Y )
          , 5, RSColor.Yellow, new RSColor( 255, 0, 0 ) );
-      circleAnimation.Begin();
+      circleAnimation.BeginSolid();
       //LineAnimation lineAnimation = new LineAnimation( 1000, 10, new Point( 5, 5 ), new Point( Mouse.X, Mouse.Y )
       //   , new RSColor( 255, 0, 0 ), new RSColor( 1, 0, 0 ), '*' );
       //lineAnimation.Begin();

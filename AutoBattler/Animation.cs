@@ -144,6 +144,33 @@ namespace AutoBattler
             }
          }
       }
+      public void BeginSolid()
+      {
+         List<Cell>[] circleCellsArray = new List<Cell>[Radius];
+         HashSet<Cell> usedCells = new HashSet<Cell>();
+         for ( int i = 1; i <= Radius; i++ )
+         {
+            circleCellsArray[i - 1] = new List<Cell>();
+
+            foreach ( Cell cell in Game.Map.GetCellsInCircle( Start.X, Start.Y, i ) )
+            {
+               if ( !usedCells.Contains( cell ) )
+               {
+                  circleCellsArray[i - 1].Add( cell );
+                  usedCells.Add( cell );
+               }
+            }
+         }
+
+         for ( int i = 0; i < circleCellsArray.Length; i++ )
+         {
+            foreach ( Cell cell in circleCellsArray[i] )
+            {
+               BackgroundAnimation animation = new BackgroundAnimation( DurationMs, StartColor, EndColor, cell.X, cell.Y );
+               AnimationManager.AddAnimation( i * SpeedMs, animation );
+            }
+         }
+      }
    }
 
    public static class Effects

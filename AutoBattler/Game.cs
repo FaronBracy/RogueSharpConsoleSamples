@@ -49,8 +49,9 @@ public static class Game
       MainWindow.RootConsole.Clear();
       MainWindow.RootConsole.SetChar( 5, 5, '@' );
       MainWindow.RootConsole.SetChar( Mouse.X, Mouse.Y, '.' );
-      MainWindow.RootConsole.SetColor( Mouse.X, Mouse.Y, new RSColor( 255, 0, 0 ) );
-      MainWindow.RootConsole.SetBackColor( Mouse.X, Mouse.Y, new RSColor( 0, 0, 255 ) );
+      MainWindow.RootConsole.SetColor( Mouse.X, Mouse.Y, new RSColor( 255, 255, 255 ) );
+      MainWindow.RootConsole.SetBackColor( Mouse.X, Mouse.Y, new RSColor( 0, 255, 0 ) );
+      MainWindow.RootConsole.SetChar( 10, 10, '\u2192' );
       AnimationManager.Render( e );
       MainWindow.Draw();
    }
@@ -58,9 +59,13 @@ public static class Game
    private static void MainWindowMouseDown( object? sender, MouseEventArgs e )
    {
       Console.WriteLine( e );
-      LineAnimation lineAnimation = new LineAnimation( 1000, 10, new Point( 5, 5 ), new Point( Mouse.X, Mouse.Y )
-         , new RSColor( 255, 0, 0 ), new RSColor( 1, 0, 0 ), '*' );
-      lineAnimation.Begin();
+      //Effects.ShootArrow( new Point( 5, 5 ), new Point( Mouse.X, Mouse.Y ) );
+      CircleAnimation circleAnimation = new CircleAnimation( 1000, 50, new Point( Mouse.X, Mouse.Y )
+         , 5, RSColor.Yellow, new RSColor( 255, 0, 0 ) );
+      circleAnimation.Begin();
+      //LineAnimation lineAnimation = new LineAnimation( 1000, 10, new Point( 5, 5 ), new Point( Mouse.X, Mouse.Y )
+      //   , new RSColor( 255, 0, 0 ), new RSColor( 1, 0, 0 ), '*' );
+      //lineAnimation.Begin();
    }
 
    private static void MainWindowMouseMove( object? sender, MouseEventArgs e )

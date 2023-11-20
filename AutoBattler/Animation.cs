@@ -42,9 +42,9 @@ namespace AutoBattler
 
       public override void Update( FrameEventArgs e )
       {
-         //float amount = ( (float) e.TotalElapsedMs - StartTimeMs ) / DurationMs;
+         float amount = ( (float) e.TotalElapsedMs - StartTimeMs ) / DurationMs;
          CurrentColor = StartColor;
-         //CurrentColor = RSColor.Lerp( StartColor, EndColor, amount );
+         CurrentColor = RSColor.Lerp( StartColor, EndColor, amount );
          //Console.WriteLine( $"Updating Animation at {e.TotalElapsedMs} - {CurrentColor} - {amount}" );
       }
       public override void Render( FrameEventArgs e )
@@ -111,6 +111,47 @@ namespace AutoBattler
             SymbolAnimation symbolAnimation = new SymbolAnimation( SpeedMs, Symbol, Symbol, RSColor.White, RSColor.White, cell.X, cell.Y );
             AnimationManager.AddAnimation( i * SpeedMs, symbolAnimation );
          }
+      }
+   }
+
+   public class CircleAnimation
+   {
+      public long DurationMs { get; set; }
+      public int SpeedMs { get; set; }
+      public Point Start { get; set; }
+      public int Radius { get; set; }
+      public RSColor StartColor { get; set; }
+      public RSColor EndColor { get; set; }
+
+      public CircleAnimation( long durationMs, int speedMs, Point start, int radius, RSColor startColor, RSColor endColor )
+      {
+         DurationMs = durationMs;
+         SpeedMs = speedMs;
+         Start = start;
+         Radius = radius;
+         StartColor = startColor;
+         EndColor = endColor;
+      }
+
+      public void Begin()
+      {
+         for ( int i = 1; i <= Radius; i++ )
+         {
+            foreach ( Cell cell in Game.Map.GetBorderCellsInCircle( Start.X, Start.Y, i ) )
+            {
+               BackgroundAnimation animation = new BackgroundAnimation( DurationMs, StartColor, EndColor, cell.X, cell.Y );
+               AnimationManager.AddAnimation( i * SpeedMs, animation );
+            }
+         }
+      }
+   }
+
+   public static class Effects
+   {
+      public static void ShootArrow( Point start, Point end )
+      {
+         LineAnimation lineAnimation = new LineAnimation( 50, 10, start, end, RSColor.Green, RSColor.LightGreen, '\u2192' );
+         lineAnimation.Begin();
       }
    }
 }

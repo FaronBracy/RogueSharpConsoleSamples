@@ -9,7 +9,7 @@ namespace AutoBattler
       public static void AddAnimation(long startOffsetMs, Animation animation )
       {
          animation.StartTimeMs = Game.MainWindow.Stopwatch.ElapsedMilliseconds + startOffsetMs;
-         Console.WriteLine( $"Adding Animation at {animation.StartTimeMs}" );
+         //Console.WriteLine( $"Adding Animation at {animation.StartTimeMs}" );
          Animations.Add( animation );
       }
 

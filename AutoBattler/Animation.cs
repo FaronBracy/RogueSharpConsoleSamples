@@ -180,5 +180,12 @@ namespace AutoBattler
          LineAnimation lineAnimation = new LineAnimation( 50, 10, start, end, RSColor.Green, RSColor.LightGreen, '\u2192' );
          lineAnimation.Begin();
       }
+
+      public static void Explosion( Point center, int radius )
+      {
+         CircleAnimation circleAnimation = new CircleAnimation( 1000, 50, center
+            , radius, RSColor.Yellow, new RSColor( 255, 0, 0 ) );
+         circleAnimation.BeginSolid();
+      }
    }
 }

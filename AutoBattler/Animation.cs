@@ -1,8 +1,213 @@
-﻿using RogueSharp;
+﻿using System.Reflection.Metadata.Ecma335;
+using RogueSharp;
 using RogueSharp.ConsoleEngine;
+using Point = RogueSharp.Point;
 
 namespace AutoBattler
 {
+   public interface IAnimation
+   {
+      void Update( FrameEventArgs e );
+      void Render( FrameEventArgs e );
+      long StartTimeMs { get; set; }
+      bool IsComplete { get; }
+   }
+
+   public class CellAnimation : IAnimation
+   {
+      public int X { get; set; }
+      public int Y { get; set; }
+      public long StartTimeMs { get; set; }
+      public long DurationMs { get; set; }
+      public long EndTimeMs => StartTimeMs + DurationMs;
+      public long LastUpdateMs { get; private set; }
+      public long LastRenderMs { get; private set; }
+
+      public bool IsComplete => LastUpdateMs - StartTimeMs > DurationMs;
+
+      public RSColor? StartBackgroundColor { get; set; }
+      public RSColor? EndBackgroundColor { get; set; }
+      public RSColor? CurrentBackgroundColor { get; private set; }
+
+      public RSColor? StartColor { get; set; }
+      public RSColor? EndColor { get; set; }
+      public RSColor? CurrentColor { get; private set; }
+
+      public char? StartSymbol { get; set; }
+      public char? EndSymbol { get; set; }
+      public char? CurrentSymbol { get; private set; }
+
+      public CellAnimation()
+      {
+      }
+
+      public CellAnimation( int x, int y, long durationMs )
+      {
+         X = x;
+         Y = y;
+         DurationMs = durationMs;
+      }
+
+      public CellAnimation At( int x, int y )
+      {
+         X = x;
+         Y = y;
+         return this;
+      }
+
+      public CellAnimation WithDuration( long durationMs )
+      {
+         DurationMs = durationMs;
+         return this;
+      }
+
+      public CellAnimation WithBackgroundColorAnimation( RSColor startColor, RSColor endColor )
+      {
+         StartBackgroundColor = startColor;
+         EndBackgroundColor = endColor;
+         return this;
+      }
+
+      public CellAnimation WithColorAnimation( RSColor startColor, RSColor endColor )
+      {
+         StartColor = startColor;
+         EndColor = endColor;
+         return this;
+      }
+
+      public CellAnimation WithSymbolAnimation( char startSymbol, char endSymbol )
+      {
+         StartSymbol = startSymbol;
+         EndSymbol = endSymbol;
+         return this;
+      }
+
+      public void Update( FrameEventArgs e )
+      {
+         float amount = ( (float) e.TotalElapsedMs - StartTimeMs ) / DurationMs;
+         if ( StartBackgroundColor.HasValue && EndBackgroundColor.HasValue )
+         {
+            Console.WriteLine( $"{e.TotalElapsedMs} - BG Animation - Start: {StartBackgroundColor.Value} End: {EndBackgroundColor.Value} Amount: {amount}" );
+            CurrentBackgroundColor = RSColor.Lerp( StartBackgroundColor.Value, EndBackgroundColor.Value, amount );
+         }
+         if ( StartColor.HasValue && EndColor.HasValue )
+         {
+            CurrentColor = RSColor.Lerp( StartColor.Value, EndColor.Value, amount );
+         }
+         if ( StartSymbol.HasValue && EndSymbol.HasValue )
+         {
+            CurrentSymbol = (char) ( StartSymbol.Value + ( EndSymbol.Value - StartSymbol.Value ) * amount );
+         }
+         LastUpdateMs = e.TotalElapsedMs;
+      }
+
+      public void Render( FrameEventArgs e )
+      {
+         if ( CurrentBackgroundColor.HasValue )
+         {
+            Console.WriteLine( $"{e.TotalElapsedMs} - Rendering BG Color: {CurrentBackgroundColor.Value}" );
+            Game.MainWindow.RootConsole.SetBackColor( X, Y, CurrentBackgroundColor.Value );
+         }
+         if ( CurrentColor.HasValue )
+         {
+            Game.MainWindow.RootConsole.SetColor( X, Y, CurrentColor.Value );
+         }
+         LastRenderMs = e.TotalElapsedMs;
+      }
+   }
+
+   public class AnimationSeries : IAnimation
+   {
+      private readonly List<CellAnimation> _animations = new List<CellAnimation>();
+      private int _currentAnimationIndex;
+
+      public long StartTimeMs
+      {
+         get => _animations[0].StartTimeMs;
+         set
+         {
+            Console.WriteLine( $"Setting start time to {value}" );
+            _animations[0].StartTimeMs = value;
+         }
+      }
+
+      public bool IsComplete => _animations.All( a => a.IsComplete );
+      public long EndTimeMs => _animations.Max( a => a.EndTimeMs );
+
+      public void Add( CellAnimation animation )
+      {
+         _animations.Add( animation );
+      }
+
+      public void Update( FrameEventArgs e )
+      {
+         if ( IsComplete )
+         {
+            // Fire an event to notify that the animation series is complete
+            return;
+         }
+
+         if ( _animations[_currentAnimationIndex].IsComplete )
+         {
+            // Advance to the next frame
+            _currentAnimationIndex++;
+            if ( _currentAnimationIndex >= _animations.Count )
+            {
+               return;
+            }
+            _animations[_currentAnimationIndex].StartTimeMs = e.TotalElapsedMs;
+         }
+
+         Console.WriteLine( $"{e.TotalElapsedMs} - Updating animation {_currentAnimationIndex} of {_animations.Count}" );
+         _animations[_currentAnimationIndex].Update( e );
+      }
+
+      public void Render( FrameEventArgs e )
+      {
+         if ( IsComplete )
+         {
+            return;
+         }
+
+         if ( _currentAnimationIndex >= _animations.Count )
+         {
+            return;
+         }
+         Console.WriteLine( $"{e.TotalElapsedMs} - Rendering animation {_currentAnimationIndex} of {_animations.Count}" );
+         _animations[_currentAnimationIndex].Render( e );
+      }
+
+   }
+
+   public class LineAnimationSeries : AnimationSeries
+   {
+      public Point Origin { get; set; }
+      public Point Destination { get; set; }
+
+      public LineAnimationSeries( Point origin, Point destination )
+      {
+         Origin = origin;
+         Destination = destination;
+
+         int i = 0;
+         foreach ( Cell cell in Game.Map.GetCellsAlongLine( Origin.X, Origin.Y, Destination.X, Destination.Y ) )
+         {
+            CellAnimation animation = new CellAnimation()
+               .At( cell.X, cell.Y )
+               .WithDuration( 500 )
+               .WithBackgroundColorAnimation( RSColor.Yellow, RSColor.Red );
+            Add( animation );
+         }
+      }
+   }
+
+   public class CircleAnimationSeries : AnimationSeries
+   {
+      public Point Center { get; set; }
+      public int Radius { get; set; }
+   }
+
+
    public class Animation
    {
       public RSColor EndColor { get; set; }
@@ -13,7 +218,7 @@ namespace AutoBattler
 
       public long StartTimeMs { get; set; }
       public RSColor CurrentColor { get; set; }
-      public bool IsComplete => Game.MainWindow.Stopwatch.ElapsedMilliseconds - StartTimeMs > DurationMs;
+      public bool IsComplete => Game.MainWindow.ElapsedMilliseconds - StartTimeMs > DurationMs;
 
       public Animation( long durationMs, RSColor startColor, RSColor endColor, int x, int y )
       {
@@ -27,7 +232,7 @@ namespace AutoBattler
       public virtual void Update( FrameEventArgs e )
       {
       }
-      
+
       public virtual void Render( FrameEventArgs e )
       {
       }

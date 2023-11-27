@@ -2,13 +2,42 @@
 
 namespace AutoBattler
 {
+   public static class AnimationSystem
+   {
+      private static readonly List<IAnimation> Animations = new List<IAnimation>();
+
+      public static void AddAnimation( IAnimation animation )
+      {
+         animation.StartTimeMs = Game.MainWindow.ElapsedMilliseconds;
+         Animations.Add( animation );
+      }
+
+      public static void Update( FrameEventArgs e )
+      {
+         foreach ( IAnimation animation in Animations )
+         {
+            animation.Update( e );
+         }
+
+         Animations.RemoveAll( anim => anim.IsComplete );
+      }
+
+      public static void Render( FrameEventArgs e )
+      {
+         foreach ( IAnimation animation in Animations )
+         {
+            animation.Render( e );
+         }
+      }
+   }
+
    public static class AnimationManager
    {
       public static List<Animation> Animations = new List<Animation>();
 
       public static void AddAnimation(long startOffsetMs, Animation animation )
       {
-         animation.StartTimeMs = Game.MainWindow.Stopwatch.ElapsedMilliseconds + startOffsetMs;
+         animation.StartTimeMs = Game.MainWindow.ElapsedMilliseconds + startOffsetMs;
          //Console.WriteLine( $"Adding Animation at {animation.StartTimeMs}" );
          Animations.Add( animation );
       }
@@ -24,7 +53,7 @@ namespace AutoBattler
       {
          foreach ( Animation animation in Animations )
          {
-            if ( animation.StartTimeMs <= Game.MainWindow.Stopwatch.ElapsedMilliseconds )
+            if ( animation.StartTimeMs <= Game.MainWindow.ElapsedMilliseconds )
             {
                animation.Update( e );
             }
@@ -37,7 +66,7 @@ namespace AutoBattler
       {
          foreach ( Animation animation in Animations )
          {
-            if ( animation.StartTimeMs <= Game.MainWindow.Stopwatch.ElapsedMilliseconds )
+            if ( animation.StartTimeMs <= Game.MainWindow.ElapsedMilliseconds )
             {
                animation.Render( e );
             }

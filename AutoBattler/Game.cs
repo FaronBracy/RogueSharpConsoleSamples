@@ -27,21 +27,22 @@ public static class Game
       {
          Map.SetCellProperties( cell.X, cell.Y, true, true );
       }
-      
+
 
       //for ( int x = 5; x < 50; x++ )
       //{
       //   Animation animation = new Animation( 1000, new RSColor(1, 0, 0), new RSColor(255,0,0), x, 5 );
       //   AnimationManager.AddAnimation( (x - 4) * 10, animation );
       //}
-       
+
 
       MainWindow.Start();
    }
 
    private static void MainWindowUpdate( object? sender, FrameEventArgs e )
    {
-      AnimationManager.Update( e );
+      //AnimationManager.Update( e );
+      AnimationSystem.Update( e );
    }
 
    private static void MainWindowRender( object? sender, FrameEventArgs e )
@@ -54,15 +55,34 @@ public static class Game
       MainWindow.RootConsole.SetBackColor( Mouse.X, Mouse.Y, new RSColor( 0, 255, 0 ) );
 
       MainWindow.RootConsole.SetChar( 10, 10, '\u2192' );
-      AnimationManager.Render( e );
+      MainWindow.RootConsole.SetChar( 11, 10, BitmapFont.TileIndexToUnicodeInt( 27 ) );
+      //AnimationManager.Render( e );
+      AnimationSystem.Render( e );
       MainWindow.Draw();
    }
 
    private static void MainWindowMouseDown( object? sender, MouseEventArgs e )
    {
+      // TODO - Create a way to map new unicode values to tiles - Start this at 10000 for an example game
+      // TODO - Rename RSCell to RSTile
+      // TODO - Animation chaining
+      // TODO - Matrix animation effect loading screen
+      // TODO - Get symbol animation working
+
       Console.WriteLine( e );
-      Effects.ShootArrow( new Point( 5, 5 ), new Point( Mouse.X, Mouse.Y ) );
-      Effects.Explosion( new Point(Mouse.X, Mouse.Y), 7 );
+      //Effects.ShootArrow( new Point( 5, 5 ), new Point( Mouse.X, Mouse.Y ) );
+      //Effects.Explosion( new Point( Mouse.X, Mouse.Y ), 7 );
+
+
+      LineAnimationSeries lineAnimationSeries = new LineAnimationSeries( new Point( 5, 5 ), new Point( Mouse.X, Mouse.Y ) );
+      AnimationSystem.AddAnimation( lineAnimationSeries );
+
+      //CellAnimation cellAnimation = new CellAnimation()
+      //   .At( Mouse.X, Mouse.Y )
+      //   .WithDuration( 2500 )
+      //   .WithBackgroundColorAnimation( RSColor.Yellow, RSColor.Red );
+
+      //AnimationSystem.AddAnimation( cellAnimation );
 
       //CircleAnimation circleAnimation = new CircleAnimation( 1000, 50, new Point( Mouse.X, Mouse.Y )
       //   , 5, RSColor.Yellow, new RSColor( 255, 0, 0 ) );

@@ -87,7 +87,7 @@ namespace AutoBattler
          float amount = ( (float) e.TotalElapsedMs - StartTimeMs ) / DurationMs;
          if ( StartBackgroundColor.HasValue && EndBackgroundColor.HasValue )
          {
-            Console.WriteLine( $"{e.TotalElapsedMs} - BG Animation - Start: {StartBackgroundColor.Value} End: {EndBackgroundColor.Value} Amount: {amount}" );
+            // Console.WriteLine( $"{e.TotalElapsedMs} - BG Animation - Start: {StartBackgroundColor.Value} End: {EndBackgroundColor.Value} Amount: {amount}" );
             CurrentBackgroundColor = RSColor.Lerp( StartBackgroundColor.Value, EndBackgroundColor.Value, amount );
          }
          if ( StartColor.HasValue && EndColor.HasValue )
@@ -105,7 +105,7 @@ namespace AutoBattler
       {
          if ( CurrentBackgroundColor.HasValue )
          {
-            Console.WriteLine( $"{e.TotalElapsedMs} - Rendering BG Color: {CurrentBackgroundColor.Value}" );
+            // Console.WriteLine( $"{e.TotalElapsedMs} - Rendering BG Color: {CurrentBackgroundColor.Value}" );
             Game.MainWindow.RootConsole.SetBackColor( X, Y, CurrentBackgroundColor.Value );
          }
          if ( CurrentColor.HasValue )
@@ -113,6 +113,29 @@ namespace AutoBattler
             Game.MainWindow.RootConsole.SetColor( X, Y, CurrentColor.Value );
          }
          LastRenderMs = e.TotalElapsedMs;
+      }
+
+      public CellAnimation Clone()
+      {
+         // Make a deep copy of the animation
+         return new CellAnimation
+         {
+            X = X,
+            Y = Y,
+            StartTimeMs = StartTimeMs,
+            DurationMs = DurationMs,
+            LastUpdateMs = LastUpdateMs,
+            LastRenderMs = LastRenderMs,
+            StartBackgroundColor = StartBackgroundColor,
+            EndBackgroundColor = EndBackgroundColor,
+            CurrentBackgroundColor = CurrentBackgroundColor,
+            StartColor = StartColor,
+            EndColor = EndColor,
+            CurrentColor = CurrentColor,
+            StartSymbol = StartSymbol,
+            EndSymbol = EndSymbol,
+            CurrentSymbol = CurrentSymbol
+         };
       }
    }
 
@@ -124,11 +147,7 @@ namespace AutoBattler
       public long StartTimeMs
       {
          get => _animations[0].StartTimeMs;
-         set
-         {
-            Console.WriteLine( $"Setting start time to {value}" );
-            _animations[0].StartTimeMs = value;
-         }
+         set => _animations[0].StartTimeMs = value;
       }
 
       public bool IsComplete => _animations.All( a => a.IsComplete );
@@ -158,7 +177,7 @@ namespace AutoBattler
             _animations[_currentAnimationIndex].StartTimeMs = e.TotalElapsedMs;
          }
 
-         Console.WriteLine( $"{e.TotalElapsedMs} - Updating animation {_currentAnimationIndex} of {_animations.Count}" );
+         // Console.WriteLine( $"{e.TotalElapsedMs} - Updating animation {_currentAnimationIndex} of {_animations.Count}" );
          _animations[_currentAnimationIndex].Update( e );
       }
 
@@ -173,40 +192,71 @@ namespace AutoBattler
          {
             return;
          }
-         Console.WriteLine( $"{e.TotalElapsedMs} - Rendering animation {_currentAnimationIndex} of {_animations.Count}" );
+         // Console.WriteLine( $"{e.TotalElapsedMs} - Rendering animation {_currentAnimationIndex} of {_animations.Count}" );
          _animations[_currentAnimationIndex].Render( e );
       }
-
    }
-
-   public class LineAnimationSeries : AnimationSeries
+   
+   public class LineAnimation2 
    {
       public Point Origin { get; set; }
       public Point Destination { get; set; }
+      public CellAnimation CellAnimation { get; set; }
+      public long SpeedMs { get; set; }
 
-      public LineAnimationSeries( Point origin, Point destination )
+      public LineAnimation2( Point origin, Point destination, CellAnimation cellAnimation, long speedMs )
       {
          Origin = origin;
          Destination = destination;
+         CellAnimation = cellAnimation;
+         SpeedMs = speedMs;
+      }
 
+      public void Begin()
+      {
          int i = 0;
          foreach ( Cell cell in Game.Map.GetCellsAlongLine( Origin.X, Origin.Y, Destination.X, Destination.Y ) )
          {
-            CellAnimation animation = new CellAnimation()
-               .At( cell.X, cell.Y )
-               .WithDuration( 500 )
-               .WithBackgroundColorAnimation( RSColor.Yellow, RSColor.Red );
-            Add( animation );
+            // Clone the CellAnimation, then change the X and Y values
+            CellAnimation cellAnimation = CellAnimation.Clone().At( cell.X, cell.Y );
+
+            //CellAnimation animation = new CellAnimation()
+            //   .At( cell.X, cell.Y )
+            //   .WithDuration( 250 )
+            //   .WithBackgroundColorAnimation( RSColor.Yellow, RSColor.Red );
+            AnimationSystem.AddAnimation( cellAnimation, ++i * SpeedMs );
          }
       }
    }
 
-   public class CircleAnimationSeries : AnimationSeries
+   public class CircleAnimation2
    {
       public Point Center { get; set; }
       public int Radius { get; set; }
-   }
+      public CellAnimation CellAnimation { get; set; }
+      public long SpeedMs { get; set; }
 
+      public CircleAnimation2( Point center, int radius, CellAnimation cellAnimation, long speedMs )
+      {
+         Center = center;
+         CellAnimation = cellAnimation;
+         SpeedMs = speedMs;
+         Radius = radius;
+      }
+
+      public void Begin( long startOffsetMs = 0 )
+      {
+         for ( int i = 1; i <= Radius; i++ )
+         {
+            foreach ( Cell cell in Game.Map.GetBorderCellsInCircle( Center.X, Center.Y, i ) )
+            {
+               CellAnimation cellAnimation = CellAnimation.Clone().At( cell.X, cell.Y );
+               AnimationSystem.AddAnimation( cellAnimation, (i * SpeedMs) + startOffsetMs );
+            }
+         }
+      }
+   }
+   
 
    public class Animation
    {

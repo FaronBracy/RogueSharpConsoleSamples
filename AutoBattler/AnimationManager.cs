@@ -6,9 +6,9 @@ namespace AutoBattler
    {
       private static readonly List<IAnimation> Animations = new List<IAnimation>();
 
-      public static void AddAnimation( IAnimation animation )
+      public static void AddAnimation( IAnimation animation, long startOffsetMs = 0 )
       {
-         animation.StartTimeMs = Game.MainWindow.ElapsedMilliseconds;
+         animation.StartTimeMs = Game.MainWindow.ElapsedMilliseconds + startOffsetMs;
          Animations.Add( animation );
       }
 
@@ -45,7 +45,7 @@ namespace AutoBattler
       public static void RemoveAnimation( Animation animation )
       {
          // TODO: Expire the animation so it will remove on the next update
-         Console.WriteLine( "Removing Animation" );
+         //Console.WriteLine( "Removing Animation" );
          Animations.Remove( animation );
       }
 

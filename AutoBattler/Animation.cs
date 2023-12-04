@@ -284,14 +284,32 @@ namespace AutoBattler
       public AnimationGroup Generate()
       {
          AnimationGroup animations = new AnimationGroup();
+
+         List<Cell>[] circleCellsArray = new List<Cell>[Radius];
+         HashSet<Cell> usedCells = new HashSet<Cell>();
          for ( int i = 1; i <= Radius; i++ )
          {
-            foreach ( Cell cell in Game.Map.GetBorderCellsInCircle( Center.X, Center.Y, i ) )
+            circleCellsArray[i - 1] = new List<Cell>();
+
+            foreach ( Cell cell in Game.Map.GetCellsInCircle( Center.X, Center.Y, i ) )
+            {
+               if ( !usedCells.Contains( cell ) )
+               {
+                  circleCellsArray[i - 1].Add( cell );
+                  usedCells.Add( cell );
+               }
+            }
+         }
+
+         for ( int i = 0; i < circleCellsArray.Length; i++ )
+         {
+            foreach ( Cell cell in circleCellsArray[i] )
             {
                CellAnimation cellAnimation = CellAnimation.Clone().At( cell.X, cell.Y );
                animations.Add( cellAnimation, i * SpeedMs );
             }
          }
+         
          return animations;
       }
    }

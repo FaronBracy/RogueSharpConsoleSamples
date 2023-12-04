@@ -12,6 +12,14 @@ namespace AutoBattler
          Animations.Add( animation );
       }
 
+      public static void AddAnimations( List<(CellAnimation, long)> animations, long seriesStartOffsetMs = 0 )
+      {
+         foreach ( ( IAnimation animation, long individualAnimationStartOffsetMs ) in animations )
+         {
+            AddAnimation( animation, seriesStartOffsetMs + individualAnimationStartOffsetMs );
+         }
+      }
+
       public static void Update( FrameEventArgs e )
       {
          foreach ( IAnimation animation in Animations )

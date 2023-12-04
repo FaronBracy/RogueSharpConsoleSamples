@@ -74,17 +74,23 @@ public static class Game
       //Effects.Explosion( new Point( Mouse.X, Mouse.Y ), 7 );
 
 
-      AnimationSeries animationSeries = new AnimationSeries();
+      //AnimationSeries animationSeries = new AnimationSeries();
 
       CellAnimation animation = new CellAnimation()
          .WithDuration( 250 )
          .WithBackgroundColorAnimation( RSColor.Yellow, RSColor.Red );
 
       LineAnimation2 lineAnimation2 = new LineAnimation2( new Point( 5, 5 ), new Point( Mouse.X, Mouse.Y ), animation, 50 );
-      lineAnimation2.Begin();
+      AnimationGroup lineAnimationGroup = lineAnimation2.Generate();
+      //LineAnimation2.Begin();
+      
 
       CircleAnimation2 circleAnimation2 = new CircleAnimation2( new Point( Mouse.X, Mouse.Y ), 5, animation, 50 );
-      circleAnimation2.Begin();
+      AnimationGroup circleAnimationGroup = circleAnimation2.Generate();
+      //circleAnimation2.Begin();
+
+      AnimationSystem.AddAnimations( lineAnimationGroup.GetAnimations() );
+      AnimationSystem.AddAnimations( circleAnimationGroup.GetAnimations(), lineAnimationGroup.AnimationGroupLengthMs );
 
       //CellAnimation cellAnimation = new CellAnimation()
       //   .At( Mouse.X, Mouse.Y )

@@ -195,8 +195,28 @@ namespace AutoBattler
          _animations[_currentAnimationIndex].Render( e );
       }
    }
-   
-   public class LineAnimation2 
+
+
+   public class AnimationGroup
+   {
+      public long AnimationGroupLengthMs { get; private set; }
+
+      private readonly List<(CellAnimation, long)> _animations = new List<(CellAnimation, long)>();
+
+      public void Add( CellAnimation cellAnimation, long startTimeOffsetMs )
+      {
+         _animations.Add( (cellAnimation, startTimeOffsetMs) );
+
+         AnimationGroupLengthMs = Math.Max( AnimationGroupLengthMs, startTimeOffsetMs + cellAnimation.DurationMs );
+      }
+
+      public List<(CellAnimation, long)> GetAnimations()
+      {
+         return _animations;
+      }
+   }
+
+   public class LineAnimation2
    {
       public Point Origin { get; set; }
       public Point Destination { get; set; }
@@ -216,15 +236,21 @@ namespace AutoBattler
          int i = 0;
          foreach ( Cell cell in Game.Map.GetCellsAlongLine( Origin.X, Origin.Y, Destination.X, Destination.Y ) )
          {
-            // Clone the CellAnimation, then change the X and Y values
             CellAnimation cellAnimation = CellAnimation.Clone().At( cell.X, cell.Y );
-
-            //CellAnimation animation = new CellAnimation()
-            //   .At( cell.X, cell.Y )
-            //   .WithDuration( 250 )
-            //   .WithBackgroundColorAnimation( RSColor.Yellow, RSColor.Red );
             AnimationSystem.AddAnimation( cellAnimation, ++i * SpeedMs );
          }
+      }
+
+      public AnimationGroup Generate()
+      {
+         AnimationGroup animations = new AnimationGroup();
+         int i = 0;
+         foreach ( Cell cell in Game.Map.GetCellsAlongLine( Origin.X, Origin.Y, Destination.X, Destination.Y ) )
+         {
+            CellAnimation cellAnimation = CellAnimation.Clone().At( cell.X, cell.Y );
+            animations.Add( cellAnimation, ++i * SpeedMs );
+         }
+         return animations;
       }
    }
 
@@ -250,12 +276,26 @@ namespace AutoBattler
             foreach ( Cell cell in Game.Map.GetBorderCellsInCircle( Center.X, Center.Y, i ) )
             {
                CellAnimation cellAnimation = CellAnimation.Clone().At( cell.X, cell.Y );
-               AnimationSystem.AddAnimation( cellAnimation, (i * SpeedMs) + startOffsetMs );
+               AnimationSystem.AddAnimation( cellAnimation, ( i * SpeedMs ) + startOffsetMs );
             }
          }
       }
+
+      public AnimationGroup Generate()
+      {
+         AnimationGroup animations = new AnimationGroup();
+         for ( int i = 1; i <= Radius; i++ )
+         {
+            foreach ( Cell cell in Game.Map.GetBorderCellsInCircle( Center.X, Center.Y, i ) )
+            {
+               CellAnimation cellAnimation = CellAnimation.Clone().At( cell.X, cell.Y );
+               animations.Add( cellAnimation, i * SpeedMs );
+            }
+         }
+         return animations;
+      }
    }
-   
+
 
    public class Animation
    {

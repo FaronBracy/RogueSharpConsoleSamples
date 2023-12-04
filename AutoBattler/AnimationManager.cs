@@ -16,7 +16,10 @@ namespace AutoBattler
       {
          foreach ( IAnimation animation in Animations )
          {
-            animation.Update( e );
+            if ( animation.StartTimeMs <= Game.MainWindow.ElapsedMilliseconds )
+            {
+               animation.Update( e );
+            }
          }
 
          Animations.RemoveAll( anim => anim.IsComplete );
@@ -26,7 +29,10 @@ namespace AutoBattler
       {
          foreach ( IAnimation animation in Animations )
          {
-            animation.Render( e );
+            if ( animation.StartTimeMs <= Game.MainWindow.ElapsedMilliseconds )
+            {
+               animation.Render( e );
+            }
          }
       }
    }

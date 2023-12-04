@@ -216,14 +216,14 @@ namespace AutoBattler
       }
    }
 
-   public class LineAnimation2
+   public class LineAnimation
    {
       public Point Origin { get; set; }
       public Point Destination { get; set; }
       public CellAnimation CellAnimation { get; set; }
       public long SpeedMs { get; set; }
 
-      public LineAnimation2( Point origin, Point destination, CellAnimation cellAnimation, long speedMs )
+      public LineAnimation( Point origin, Point destination, CellAnimation cellAnimation, long speedMs )
       {
          Origin = origin;
          Destination = destination;
@@ -237,7 +237,7 @@ namespace AutoBattler
          foreach ( Cell cell in Game.Map.GetCellsAlongLine( Origin.X, Origin.Y, Destination.X, Destination.Y ) )
          {
             CellAnimation cellAnimation = CellAnimation.Clone().At( cell.X, cell.Y );
-            AnimationSystem.AddAnimation( cellAnimation, ++i * SpeedMs );
+            AnimationManager.AddAnimation( cellAnimation, ++i * SpeedMs );
          }
       }
 
@@ -254,14 +254,14 @@ namespace AutoBattler
       }
    }
 
-   public class CircleAnimation2
+   public class CircleAnimation
    {
       public Point Center { get; set; }
       public int Radius { get; set; }
       public CellAnimation CellAnimation { get; set; }
       public long SpeedMs { get; set; }
 
-      public CircleAnimation2( Point center, int radius, CellAnimation cellAnimation, long speedMs )
+      public CircleAnimation( Point center, int radius, CellAnimation cellAnimation, long speedMs )
       {
          Center = center;
          CellAnimation = cellAnimation;
@@ -276,7 +276,7 @@ namespace AutoBattler
             foreach ( Cell cell in Game.Map.GetBorderCellsInCircle( Center.X, Center.Y, i ) )
             {
                CellAnimation cellAnimation = CellAnimation.Clone().At( cell.X, cell.Y );
-               AnimationSystem.AddAnimation( cellAnimation, ( i * SpeedMs ) + startOffsetMs );
+               AnimationManager.AddAnimation( cellAnimation, ( i * SpeedMs ) + startOffsetMs );
             }
          }
       }

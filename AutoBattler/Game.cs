@@ -33,7 +33,7 @@ public static class Game
 
    private static void MainWindowUpdate( object? sender, FrameEventArgs e )
    {
-      AnimationSystem.Update( e );
+      AnimationManager.Update( e );
    }
 
    private static void MainWindowRender( object? sender, FrameEventArgs e )
@@ -47,7 +47,7 @@ public static class Game
 
       MainWindow.RootConsole.SetChar( 10, 10, '\u2192' );
       MainWindow.RootConsole.SetChar( 11, 10, BitmapFont.TileIndexToUnicodeInt( 27 ) );
-      AnimationSystem.Render( e );
+      AnimationManager.Render( e );
       MainWindow.Draw();
    }
 
@@ -76,8 +76,8 @@ public static class Game
       AnimationGroup circleAnimationGroup = circleAnimation2.Generate();
       //circleAnimation2.Begin();
 
-      AnimationSystem.AddAnimations( lineAnimationGroup.GetAnimations() );
-      AnimationSystem.AddAnimations( circleAnimationGroup.GetAnimations(), lineAnimationGroup.AnimationGroupLengthMs );
+      AnimationManager.AddAnimations( lineAnimationGroup.GetAnimations() );
+      AnimationManager.AddAnimations( circleAnimationGroup.GetAnimations(), lineAnimationGroup.AnimationGroupLengthMs );
    }
 
    private static void MainWindowMouseMove( object? sender, MouseEventArgs e )

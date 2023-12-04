@@ -2,7 +2,7 @@
 
 namespace AutoBattler
 {
-   public static class AnimationSystem
+   public static class AnimationManager
    {
       private static readonly List<IAnimation> Animations = new List<IAnimation>();
 

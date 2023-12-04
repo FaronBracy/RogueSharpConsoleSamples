@@ -4,15 +4,7 @@ using Point = RogueSharp.Point;
 
 namespace AutoBattler
 {
-   public interface IAnimation
-   {
-      void Update( FrameEventArgs e );
-      void Render( FrameEventArgs e );
-      long StartTimeMs { get; set; }
-      bool IsComplete { get; }
-   }
-
-   public class CellAnimation : IAnimation
+   public class CellAnimation
    {
       public int X { get; set; }
       public int Y { get; set; }
@@ -137,66 +129,7 @@ namespace AutoBattler
          };
       }
    }
-
-   public class AnimationSeries : IAnimation
-   {
-      private readonly List<CellAnimation> _animations = new List<CellAnimation>();
-      private int _currentAnimationIndex;
-
-      public long StartTimeMs
-      {
-         get => _animations[0].StartTimeMs;
-         set => _animations[0].StartTimeMs = value;
-      }
-
-      public bool IsComplete => _animations.All( a => a.IsComplete );
-      public long EndTimeMs => _animations.Max( a => a.EndTimeMs );
-
-      public void Add( CellAnimation animation )
-      {
-         _animations.Add( animation );
-      }
-
-      public void Update( FrameEventArgs e )
-      {
-         if ( IsComplete )
-         {
-            // Fire an event to notify that the animation series is complete
-            return;
-         }
-
-         if ( _animations[_currentAnimationIndex].IsComplete )
-         {
-            // Advance to the next frame
-            _currentAnimationIndex++;
-            if ( _currentAnimationIndex >= _animations.Count )
-            {
-               return;
-            }
-            _animations[_currentAnimationIndex].StartTimeMs = e.TotalElapsedMs;
-         }
-
-         // Console.WriteLine( $"{e.TotalElapsedMs} - Updating animation {_currentAnimationIndex} of {_animations.Count}" );
-         _animations[_currentAnimationIndex].Update( e );
-      }
-
-      public void Render( FrameEventArgs e )
-      {
-         if ( IsComplete )
-         {
-            return;
-         }
-
-         if ( _currentAnimationIndex >= _animations.Count )
-         {
-            return;
-         }
-         // Console.WriteLine( $"{e.TotalElapsedMs} - Rendering animation {_currentAnimationIndex} of {_animations.Count}" );
-         _animations[_currentAnimationIndex].Render( e );
-      }
-   }
-
-
+   
    public class AnimationGroup
    {
       public long AnimationGroupLengthMs { get; private set; }

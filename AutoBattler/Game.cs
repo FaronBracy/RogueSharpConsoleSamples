@@ -67,14 +67,14 @@ public static class Game
          .WithDuration( 250 )
          .WithBackgroundColorAnimation( RSColor.Yellow, RSColor.Red );
 
-      LineAnimation2 lineAnimation2 = new LineAnimation2( new Point( 5, 5 ), new Point( Mouse.X, Mouse.Y ), animation, 50 );
-      AnimationGroup lineAnimationGroup = lineAnimation2.Generate();
-      //LineAnimation2.Begin();
+      LineAnimation lineAnimation = new LineAnimation( new Point( 5, 5 ), new Point( Mouse.X, Mouse.Y ), animation, 50 );
+      AnimationGroup lineAnimationGroup = lineAnimation.Generate();
+      //LineAnimation.Begin();
       
 
-      CircleAnimation2 circleAnimation2 = new CircleAnimation2( new Point( Mouse.X, Mouse.Y ), 5, animation, 50 );
-      AnimationGroup circleAnimationGroup = circleAnimation2.Generate();
-      //circleAnimation2.Begin();
+      CircleAnimation circleAnimation = new CircleAnimation( new Point( Mouse.X, Mouse.Y ), 5, animation, 50 );
+      AnimationGroup circleAnimationGroup = circleAnimation.Generate();
+      //circleAnimation.Begin();
 
       AnimationManager.AddAnimations( lineAnimationGroup.GetAnimations() );
       AnimationManager.AddAnimations( circleAnimationGroup.GetAnimations(), lineAnimationGroup.AnimationGroupLengthMs );

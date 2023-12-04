@@ -4,9 +4,9 @@ namespace AutoBattler
 {
    public static class AnimationManager
    {
-      private static readonly List<IAnimation> Animations = new List<IAnimation>();
+      private static readonly List<CellAnimation> Animations = new List<CellAnimation>();
 
-      public static void AddAnimation( IAnimation animation, long startOffsetMs = 0 )
+      public static void AddAnimation( CellAnimation animation, long startOffsetMs = 0 )
       {
          animation.StartTimeMs = Game.MainWindow.ElapsedMilliseconds + startOffsetMs;
          Animations.Add( animation );
@@ -14,7 +14,7 @@ namespace AutoBattler
 
       public static void AddAnimations( List<(CellAnimation, long)> animations, long seriesStartOffsetMs = 0 )
       {
-         foreach ( ( IAnimation animation, long individualAnimationStartOffsetMs ) in animations )
+         foreach ( (CellAnimation animation, long individualAnimationStartOffsetMs ) in animations )
          {
             AddAnimation( animation, seriesStartOffsetMs + individualAnimationStartOffsetMs );
          }
@@ -22,7 +22,7 @@ namespace AutoBattler
 
       public static void Update( FrameEventArgs e )
       {
-         foreach ( IAnimation animation in Animations )
+         foreach ( CellAnimation animation in Animations )
          {
             if ( animation.StartTimeMs <= Game.MainWindow.ElapsedMilliseconds )
             {
@@ -35,7 +35,7 @@ namespace AutoBattler
 
       public static void Render( FrameEventArgs e )
       {
-         foreach ( IAnimation animation in Animations )
+         foreach ( CellAnimation animation in Animations )
          {
             if ( animation.StartTimeMs <= Game.MainWindow.ElapsedMilliseconds )
             {

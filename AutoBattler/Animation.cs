@@ -24,9 +24,9 @@ namespace AutoBattler
       public RSColor? EndColor { get; set; }
       public RSColor? CurrentColor { get; private set; }
 
-      public char? StartSymbol { get; set; }
-      public char? EndSymbol { get; set; }
+      public char[]? Symbols { get; set; }
       public char? CurrentSymbol { get; private set; }
+      public int CurrentSymbolIndex { get; private set; }
 
       public CellAnimation()
       {
@@ -66,10 +66,11 @@ namespace AutoBattler
          return this;
       }
 
-      public CellAnimation WithSymbolAnimation( char startSymbol, char endSymbol )
+      public CellAnimation WithSymbolAnimation( char[] symbols )
       {
-         StartSymbol = startSymbol;
-         EndSymbol = endSymbol;
+         Symbols = symbols;
+         CurrentSymbol = symbols[0];
+         CurrentSymbolIndex = 0;
          return this;
       }
 
@@ -85,11 +86,18 @@ namespace AutoBattler
          {
             CurrentColor = RSColor.Lerp( StartColor.Value, EndColor.Value, amount );
          }
-         if ( StartSymbol.HasValue && EndSymbol.HasValue )
+         if ( Symbols != null && Symbols.Length > 0 )
          {
-            CurrentSymbol = (char) ( StartSymbol.Value + ( EndSymbol.Value - StartSymbol.Value ) * amount );
+            CurrentSymbolIndex = Lerp( 0, Symbols.Length - 1, amount );
+            CurrentSymbol = Symbols[CurrentSymbolIndex];
          }
          LastUpdateMs = e.TotalElapsedMs;
+      }
+
+      private static int Lerp( int start, int end, float amount )
+      {
+         int value = (int) ( start + ( ( end + 1 - start ) * amount ) );
+         return Math.Clamp( value, start, end );
       }
 
       public void Render( FrameEventArgs e )
@@ -102,6 +110,10 @@ namespace AutoBattler
          if ( CurrentColor.HasValue )
          {
             Game.MainWindow.RootConsole.SetColor( X, Y, CurrentColor.Value );
+         }
+         if ( CurrentSymbol.HasValue )
+         {
+            Game.MainWindow.RootConsole.SetChar( X, Y, CurrentSymbol.Value );
          }
          LastRenderMs = e.TotalElapsedMs;
       }
@@ -123,13 +135,13 @@ namespace AutoBattler
             StartColor = StartColor,
             EndColor = EndColor,
             CurrentColor = CurrentColor,
-            StartSymbol = StartSymbol,
-            EndSymbol = EndSymbol,
-            CurrentSymbol = CurrentSymbol
+            Symbols = Symbols,
+            CurrentSymbol = CurrentSymbol,
+            CurrentSymbolIndex = CurrentSymbolIndex
          };
       }
    }
-   
+
    public class AnimationGroup
    {
       public long AnimationGroupLengthMs { get; private set; }
@@ -242,7 +254,7 @@ namespace AutoBattler
                animations.Add( cellAnimation, i * SpeedMs );
             }
          }
-         
+
          return animations;
       }
    }

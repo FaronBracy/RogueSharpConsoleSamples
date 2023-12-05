@@ -27,7 +27,7 @@ public static class Game
       {
          Map.SetCellProperties( cell.X, cell.Y, true, true );
       }
-      
+
       MainWindow.Start();
    }
 
@@ -55,7 +55,6 @@ public static class Game
    {
       // TODO - Create a way to map new unicode values to tiles - Start this at 10000 for an example game
       // TODO - Rename RSCell to RSTile
-      // TODO - Animation chaining
       // TODO - Matrix animation effect loading screen
       // TODO - Get symbol animation working
 
@@ -64,13 +63,15 @@ public static class Game
       //AnimationSeries animationSeries = new AnimationSeries();
 
       CellAnimation animation = new CellAnimation()
-         .WithDuration( 250 )
+         .WithDuration( 3000 )
+         .WithSymbolAnimation( new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' } )
+         .WithColorAnimation( RSColor.Black, RSColor.White )
          .WithBackgroundColorAnimation( RSColor.Yellow, RSColor.Red );
 
       LineAnimation lineAnimation = new LineAnimation( new Point( 5, 5 ), new Point( Mouse.X, Mouse.Y ), animation, 50 );
       AnimationGroup lineAnimationGroup = lineAnimation.Generate();
       //LineAnimation.Begin();
-      
+
 
       CircleAnimation circleAnimation = new CircleAnimation( new Point( Mouse.X, Mouse.Y ), 5, animation, 50 );
       AnimationGroup circleAnimationGroup = circleAnimation.Generate();

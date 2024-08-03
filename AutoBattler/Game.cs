@@ -12,6 +12,7 @@ public static class Game
    public static void Main()
    {
       BitmapFont bitmapFont = new BitmapFont( 10, 10, 16, 16, "qbicfeet_10x10.png", BitmapFontLayout.Cp437 );
+      //BitmapFont bitmapFont = new BitmapFont( 16, 24, 16, 176, "oryx_16x24_black.png", BitmapFontLayout.Cp437 );
       Mouse = new RSMouse();
 
       MainWindow = new RSWindow( bitmapFont, 100, 50, "Auto Battler" );
@@ -26,6 +27,17 @@ public static class Game
       foreach ( Cell cell in Map.GetAllCells() )
       {
          Map.SetCellProperties( cell.X, cell.Y, true, true );
+      }
+
+      string word = "ABCDEXYZabcdexyz";
+      foreach ( int i in word )
+      {
+         Console.WriteLine( $"{i}" );
+      }
+
+      foreach ( char c in word )
+      {
+         Console.WriteLine( $"{Convert.ToInt32(c)}" );
       }
 
       MainWindow.Start();
@@ -56,14 +68,13 @@ public static class Game
       // TODO - Create a way to map new unicode values to tiles - Start this at 10000 for an example game
       // TODO - Rename RSCell to RSTile
       // TODO - Matrix animation effect loading screen
-      // TODO - Get symbol animation working
 
       Console.WriteLine( e );
 
       //AnimationSeries animationSeries = new AnimationSeries();
 
       CellAnimation animation = new CellAnimation()
-         .WithDuration( 3000 )
+         .WithDuration( 500 )
          .WithSymbolAnimation( new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' } )
          .WithColorAnimation( RSColor.Black, RSColor.White )
          .WithBackgroundColorAnimation( RSColor.Yellow, RSColor.Red );

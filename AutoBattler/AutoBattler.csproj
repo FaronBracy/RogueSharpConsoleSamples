@@ -8,10 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="oryx_16x24_black.png" />
     <None Remove="qbicfeet_10x10.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="oryx_16x24_black.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="qbicfeet_10x10.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
